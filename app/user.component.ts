@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 @Component({
   selector: 'user',
   template: `<h1>Hello {{name}}</h1>
@@ -40,10 +41,10 @@ export class UserComponent  {
 			city:'St.Catharines'
 		}
 	}
-	toggleSkills(i){
+	toggleSkills(i:string){
 		console.log(i)
 	}
-	addHobies(hobby){
+	addHobies(hobby:string){
 	this.skills.push(hobby)
 	}
 }

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'about',
-  template: `<h1>Hello {{name}}</h1>
+  template: `<h1>Hello </h1>
   			
   			`,
 })
-export class About  { name = 'Angular'; }
+export class About  { }
