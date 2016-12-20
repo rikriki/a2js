@@ -4,41 +4,84 @@ import { InterfaceItem } from './interface.item';
 
 @Component({
   selector: 'item',
-  template: `<h1>Add New Items</h1>
-  	<p>{{this.item.name}} asdasdad</p>
-  	<form >
-  		<label>Name</label>
-  		<input type="text" name="item.name" [(ngModel)]="item.name" /><br/>
-  		<label>Link</label>
-  		<input type="text" name="link" [(ngModel)]="item.link" /><br/>
-  		<label>Image</label>
-  		<input type="text" name="image" [(ngModel)]="item.image" /><br/>
-  		<label>Sub Headline</label>
-  		<input type="text" name="subHeadline" [(ngModel)]="item.subHeadline" /><br/>
-  		<label>descriptions</label>
-  		<input type="text" name="descriptions" [(ngModel)]="item.descriptions" /><br/>
-  		<br/>
-  		<input type="button" (click)="postItem()" />
-  	</form>
+  template: `
+  <div class="container">
+   <p class="success">{{response}}</p>
+    <h1>Add New Items</h1>
+    	<form class="form-group row">
+
+      <div class="form-group">
+        <label class="form-control-label">Name</label>
+        <input type="text" class="form-control" name="name" [(ngModel)]="item.name">
+      </div>
+
+      <div class="form-group">
+        <label class="form-control-label">Link</label>
+        <input type="text" class="form-control" name="link" [(ngModel)]="item.link">
+      </div>
+
+      <div class="form-group">
+        <label class="form-control-label">Image</label>
+        <input type="text" class="form-control" name="image" [(ngModel)]="item.image">
+      </div>
+
+      <div class="form-group">
+        <label class="form-control-label">Sub Headline</label>
+        <input type="text" class="form-control" name="subHeadline" [(ngModel)]="item.subHeadline">
+      </div>
+
+      <div class="form-group">
+        <label class="form-control-label">Descriptions</label>
+        <input type="text" class="form-control" name="descriptions" [(ngModel)]="item.descriptions">
+      </div>
+      <input type="button"  class="form-control pull-right" value="Submit" (click)="postItem()" />
+    	</form>
+  </div>
   `,
   providers:[PostsService]
 })
 export class ItemComponent  { 
 	item:InterfaceItem;
-	constructor(private postService:PostsService){
-		this.item={}
+	response:string;
+  constructor(private postService:PostsService){
+		this.item={
+      name:"",
+      link:"",
+      image:"",
+      subHeadline:"",
+      descriptions:""
+    };
+
 		this.postService.getPosts().subscribe(posts=>{
 			console.log(posts)
 		});
 	}
 	postItem(){
-		console.log('yow')
-		this.postService.posts({
-			name:this.item.name,
-			link:this.item.link
-		})
+		console.log('yow',this.item)
+		this.postService.posts(this.item).subscribe(
+      data=>{
+        this.response = data.items
+        console.log(data)
+      },
+      err=>{
+       console.log(err) 
+      },
+      ()=>{
+       console.log('Done') 
+      }
+    )
 	}
 	
+
+// this.http.post('http://localhost:3001/sessions/create', creds, {
+//     headers: headers
+//     })
+//     .map(res => res.json())
+//     .subscribe(
+//       data => this.saveJwt(data.id_token),
+//       err => this.logError(err),
+//       () => console.log('Authentication Complete')
+//     );
 	
 }
 

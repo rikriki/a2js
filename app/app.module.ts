@@ -7,10 +7,12 @@ import { UserComponent }  from './user.component';
 import { ItemComponent }  from './item.component';
 import { About }  from './about.component';
 import { routing }  from './app.routing';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
 
 
 @NgModule({
-  imports:      [ BrowserModule,FormsModule ,routing,HttpModule],
+  imports:      [ NgbModule.forRoot(),BrowserModule,FormsModule ,routing,HttpModule],
   declarations: [ AppComponent,UserComponent,About,ItemComponent],
   bootstrap:    [ AppComponent ]
 })
