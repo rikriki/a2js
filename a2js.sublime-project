@@ -1,0 +1,21 @@
+{
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+				"node_modules"
+			],
+			"path": "."
+		},
+		{
+			"path": "node_modules/bootstrap"
+		},
+		{
+			"path": "node_modules/grunt"
+		},
+		{
+			"path": "bbone"
+		}
+	]
+}
