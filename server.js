@@ -127,9 +127,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 app.use(jsonParser);
 
+
 app.post('/items',jsonParser, function(req,res){
   console.log('Server', req.body)
-  res.send({items:'yes'})
+  var item =req.body
+  
+  var sql  = "INSERT INTO ?? SET ?";
+  var arr = ["entity_items",{name:item.name,link:item.link,sub_headline:item.subHeadline,descriptions:item.descriptions}]
+  sql = mysql.format(sql,arr);
+  getResults(sql,function(err,results){
+    if(err){
+      console.log(err)
+      res.send(err)
+    }
+    console.log(results,'get results')
+    res.send({items:results})
+  })
+  
 })
 
 function getResults(sql,done){

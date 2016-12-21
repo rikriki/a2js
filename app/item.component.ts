@@ -61,7 +61,7 @@ export class ItemComponent  {
 		this.postService.posts(this.item).subscribe(
       data=>{
         this.response = data.items
-        console.log(data)
+        console.log(data, "Response from server")
       },
       err=>{
        console.log(err) 
