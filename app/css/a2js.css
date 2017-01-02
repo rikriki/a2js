@@ -1,3 +1,39 @@
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  margin: -42px 0 0 -12px;
+  background: #C60B09;
+  animation: spin 1s infinite linear;
+  transition:all .5s;
+}
+.done{
+   position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 60px;
+  height: 60px;
+  // margin: -42px 0 0 -12px;
+  background: #C60B09;
+  animation:scale .3s 1 linear forwards,  spin 1s infinite linear;
+  
+}
+
+@keyframes spin {
+  0% { -webkit-transform:rotate(0deg); }
+  100% { -webkit-transform:rotate(360deg); }
+}
+
+@keyframes scale {
+  0% { width: 60px; height:60px,}
+  100%{width: 0px;height: 0px;top: 50%;
+  left: 50%; }
+}
+
+
+
 /*
  * FontAwesome Icon Generators
  */

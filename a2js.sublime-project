@@ -2,6 +2,10 @@
 	"folders":
 	[
 		{
+			"file_exclude_patterns":
+			[
+				"app/*.js"
+			],
 			"folder_exclude_patterns":
 			[
 				"node_modules"
@@ -16,6 +20,9 @@
 		},
 		{
 			"path": "bbone"
+		},
+		{
+			"path": "/Users/ricky/Desktop/aws/app/video/Project (1)"
 		}
 	]
 }

@@ -1,19 +1,47 @@
 import {Injectable} from '@angular/core';
 import {Http,Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 import { InterfaceItem } from './interface.item';
-
+declare var _:any;
 
 @Injectable()
 
 export class PostsService{
+	extractData:any
+	handleError:any
 	constructor(private http: Http){
 		console.log('Post init')
 	}
+	preload(){
+		return {
+			getPosts:()=>{
+				return this.http.get('https://jsonplaceholder.typicode.com/albums')
+					.toPromise()
+					.then(this.extractData)
+					.catch(this.handleError)
+			},
+			getPhotos:()=>{
+				return this.http.get('https://jsonplaceholder.typicode.com/photos')
+			     .toPromise()
+	             .then(this.extractData)
+	             .catch(this.handleError);
+			}
+		}	
+	}
+
+	
+
 
 	getPosts(){
 		return this.http.get('http://frederick-rosales.herokuapp.com/portfolios')
-			.map(res => res.json());
+				.toPromise()
+				.then(this.extractData)
+				.catch(this.handleError)
+	}
+	getPhotos(){
+		return this.http.get('https://jsonplaceholder.typicode.com/photos')
+			.map(res=>res.json());
 	}
 	posts(item:InterfaceItem){
 		var headers = new Headers();
@@ -22,18 +50,13 @@ export class PostsService{
 		console.log(item,'RIKI')
 		return this.http.post('http://localhost:1338/items',item)
 				.map(res => res.json())
+	}
 
-		
+	getPhotosPromise(){
+		return this.http.get('https://jsonplaceholder.typicode.com/photos')
+		     .toPromise()
+             .then(this.extractData)
+             .catch(this.handleError);
 	}
 }
 
-
-// this.http.post('http://localhost:3001/sessions/create', creds, {
-//     headers: headers
-//     })
-//     .map(res => res.json())
-//     .subscribe(
-//       data => this.saveJwt(data.id_token),
-//       err => this.logError(err),
-//       () => console.log('Authentication Complete')
-//     );
