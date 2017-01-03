@@ -11,19 +11,20 @@ declare var _:any;
 export class PostsService{
 	extractData:any
 	handleError:any
+	url:String ='http://localhost:1338'
 	constructor(private http: Http){
 		console.log('Post init')
 	}
 	preload(){
 		return {
-			getPosts:()=>{
-				return this.http.get('https://jsonplaceholder.typicode.com/albums')
+			getGenres:()=>{
+				return this.http.get(this.url+'/genres')
 					.toPromise()
 					.then(this.extractData)
 					.catch(this.handleError)
 			},
-			getPhotos:()=>{
-				return this.http.get('https://jsonplaceholder.typicode.com/photos')
+			getSongs:()=>{
+				return this.http.get(this.url+'/songs')
 			     .toPromise()
 	             .then(this.extractData)
 	             .catch(this.handleError);

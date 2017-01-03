@@ -1,8 +1,11 @@
 import { Component,AfterViewInit } from '@angular/core';
 import { PostsService } from './posts.service';
 import {TitlePipe} from './TitlePipe';
+import * as io from 'socket.io-client'
+
 declare var _:any
 declare var $:any
+
 @Component({
   selector: 'my-app',
   template: `<h1>Hello {{name}}</h1>
@@ -14,30 +17,44 @@ declare var $:any
 		            	[(ngModel)]="genreSelected"
 		            	(change) ="onSelect($event.target.value)"
 		            >
-		                <option *ngFor="let x of genres" [value]="x" >{{x}}</option>
+		                <option *ngFor="let x of genres" [value]="x.type" >{{x.type}}</option>
 		            </select>
 		        
 		    </div>
   			<ul>
-  				<li *ngFor="let user of (filteredUsers)">
-  					<b></b><span>{{user.title}} | {{user.userId}}| {{user.genre}}</span>
+  				<li *ngFor="let song of (filteredSongs)">
+  					<b></b><span>{{song.title}} | {{song.genre}}</span>
   				</li>
   			</ul>`,
 
   providers:[PostsService],
-  pipes: [TitlePipe]
+  // pipes: [TitlePipe]
 })
 
 //https://scotch.io/tutorials/how-to-deal-with-different-form-controls-in-angular-2
 
 export class AppComponent implements AfterViewInit {
- name:String = 'Angular';
+ name:String = 'Player';
  titleValue:String 
  genres = ['pop','rock'];
- users:Array<any> = []
- filteredUsers:Array<any> = []
+ songs:Array<any> = [];
+ items:Array<any> = [];
+ filteredSongs:Array<any> = []
  genreSelected:String;
 	 constructor(private postsService:PostsService ){
+	 	
+	 	var client = io.connect('http://localhost:1338');
+	 	client.on( "connect", function () {
+		  	// debugger
+		    console.log( 'Client: Connected to port ' );
+
+		    // client.emit( "echo", "Hello World", function ( message:any ) {
+		    //     console.log( 'Echo received: ', message );
+		    //     client.disconnect();
+		    // } );
+		} );
+
+
 	 	let promises:any[] = [];
 	 	let self=this;
 	    _.each(this.postsService.preload(),function(func:any,key:String){
@@ -51,18 +68,29 @@ export class AppComponent implements AfterViewInit {
 	        ))
       	})
       	
-      	this.genreSelected = this.genres[0];
+      	
 
 	    Promise.all(promises).then(function(results){
-	    	
-	    	console.log(results)
-	    	
-	    	self.users = JSON.parse(results[0]._body)
-	    	self.filteredUsers=self.users=_.map(self.users,function(u,i){
-	    		return {
-	    			title:u.title,
-	    			userId:u.userId,
-	    			genre:(i%2)?'pop':'rock'
+	    	_.each(results,function(r){
+	    		self.items = JSON.parse(r._body)
+	    		
+	    		switch(self.items.type){
+	    			case 'songs' :
+	    				self.songs = self.items.items
+				    	self.filteredSongs=self.songs=_.map(self.songs,function(u:any,i:number){
+				    		return {
+				    			title:u.title,
+				    			genre:(i%2)?'Pop':'Rock'
+				    		}
+				    	})
+	    			break;
+	    			case 'genres':
+	    				self.genres = self.items.items
+	    				self.genreSelected = self.genres[0];
+	    			break;
+	    			
+
+
 	    		}
 	    	})
 	    })
@@ -73,7 +101,7 @@ export class AppComponent implements AfterViewInit {
      }
      onSelect(genre:String){
      	console.log(genre)
-     	this.filteredUsers =_.filter(this.users,function(u){
+     	this.filteredSongs =_.filter(this.songs,function(u:any){
      		return u.genre==genre
      	})
      }

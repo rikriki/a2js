@@ -6,10 +6,10 @@
 			[
 				"app/*.js"
 			],
-			"folder_exclude_patterns":
-			[
-				"node_modules"
-			],
+			// "folder_exclude_patterns":
+			// [
+			// 	"node_modules"
+			// ],
 			"path": "."
 		},
 		{
@@ -23,6 +23,9 @@
 		},
 		{
 			"path": "/Users/ricky/Desktop/aws/app/video/Project (1)"
+		},
+		{
+			"path": "/Users/ricky/Desktop/aws/rik/winterSocket"
 		}
 	]
 }
