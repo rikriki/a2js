@@ -1,0 +1,36 @@
+{
+	"folders":
+	[
+		{
+			"path": "/Users/Frederick/Desktop/redis/where-to-eat"
+		},
+		{
+			"path": "/Users/Frederick/Desktop/hdd3/home/ricky/4.0/adcenter"
+		},
+		{
+			"path": "/Users/Frederick/Desktop/Desktop/rikiPortfolio_demo/rikiAMD"
+		},
+		{
+			"path": "/Users/Frederick/Desktop/es6/my-proj"
+		},
+		{
+			"path": "/Users/Frederick/Desktop/websocket/game"
+		},
+		{
+			"path": "/Users/Frederick/Desktop/youtube/example"
+		},
+		{
+			"path": "/Users/Frederick/Desktop/youtube/frontend/",
+			"folder_exclude_patterns":
+			[
+				"**/*.js"
+			]
+			
+		},
+		{
+			"path": "."
+		}
+	]
+}
+
+
