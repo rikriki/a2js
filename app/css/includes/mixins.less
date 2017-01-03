@@ -1,0 +1,476 @@
+/*
+ * FontAwesome Icon Generators
+ */
+
+// All necessary styling to output an icon
+.fa() {
+	display: inline-block;
+	font-family: FontAwesome;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+// Overloaded to accept a 'content/ parameter as well
+.fa(@content) {
+	.fa();
+	content: @content;
+}
+
+
+/*
+ * Warning Icon
+ */
+
+// TODO: Make sure this /works/ - replaced a base64 png with FontAwesome, might need additional styling
+.warningIcon() {
+	background-color: @brand-danger;
+	.fa("\f071");
+	font-size: 160%;
+	color:@brand-color;
+}
+
+.labels-case() when (@labels-uppercase = true) {
+	text-transform: uppercase;
+}
+
+.letter-spacing() when (@letter-spacing-base >= 0em) {
+	letter-spacing: @letter-spacing-base;
+}
+.letter-spacing-header() when (@letter-spacing-header-base >= 0em) {
+	letter-spacing: @letter-spacing-header-base;
+}
+
+/*
+*  Aggressive warning
+*/
+.aggresiveWarning() when (@aggressive-warning = false) {
+	color: contrast(@background,@_danger,@alert-danger-bg,40%);
+	border-radius: @alert-border-radius;
+	background: none;
+	padding: .5em 0em;
+	&.alert-error:before {
+	    background: none;
+	    color: contrast(@background,@_danger,@alert-danger-bg,40%);
+	}
+}
+
+.aggresiveWarning() when (@aggressive-warning = true) {
+	border-radius: @alert-border-radius;
+	display: inline-block;
+	background-color: @brand-danger;
+	color:@brand-color;
+	padding: .5em 1em;
+	&.alert-error:before {
+		.warningIcon();
+	}
+}
+
+/*
+ * Include/Exclude Table
+ *
+ * Used by Device and Locales widgets.
+ */
+
+.includeExcludeTable() {
+	
+	table {
+		
+		
+		td:last-child {
+			text-align:right;
+		}
+		tr {
+			&.included td{
+				background-color:@state-success-bg;
+			}
+			&.excluded td{
+				background-color:@state-danger-bg
+				
+			}
+		}
+	}
+}
+
+
+
+/*
+ * Gradient Background - also a non-gradient hack for Flat Themes
+ */
+.gradient-background(@top-color, @bottom-color) when (@theme-flat = false) {
+    background: @bottom-color;
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(@top-color), to(@bottom-color)); /* Chrome 9-, Safari 4- */
+    background: -webkit-linear-gradient(top, @top-color, @bottom-color); /* Chrome 10+ / Safari 5.1+ */
+    background: -o-linear-gradient(top, @top-color, @bottom-color); /* Opera */
+    background: -moz-linear-gradient(top, @top-color, @bottom-color); /* Moz */
+	background: -ms-linear-gradient(top,  @top-color, @bottom-color); /* IE10+ */
+    background: linear-gradient(to bottom, @top-color, @bottom-color); /* W3C */
+    filter: 	progid:DXImageTransform.Microsoft.gradient(startColorStr='@{top-color}',EndColorStr='@{bottom-color}',GradientType=0); /* IE6-9 */
+}
+
+.gradient-background(@color) {
+	// might want to *always* use darken here so gradients are light->dark
+	.gradient-background(@color, darken(@color, 10%));
+}
+
+.gradient-background(@top-color, @bottom-color) when (@theme-flat = true) {
+	background-image: none;
+	background: @top-color; // might just want to select one of the two
+}
+
+
+
+/*
+ * Better Button Mixin
+ */
+.stated-button(@which) when (@theme-flat = false) {
+	@text-c:		~"btn-@{which}-color";
+	@bg-c:			~"btn-@{which}-bg";
+	@border-c:		~"btn-@{which}-border";
+	
+	.gradient-background(@@bg-c);
+	border: 		@border-thickness @border-style @@border-c;
+    //box-shadow: 		0px 1px 0px @background;
+	color: 			@@text-c;
+	cursor:pointer;
+    &:hover {
+        background-color: 	@@bg-c;
+        *background-color: 	@@bg-c;
+		
+    }
+	
+}
+
+.stated-object(@which)  when (@theme-flat = false){
+	@text-c:	~"btn-@{which}-color";
+	@bg-c:		~"btn-@{which}-bg";
+	@border-c:	~"btn-@{which}-border";
+
+	background:		@@bg-c;
+	border:			@border-thickness @border-style @@border-c;
+	color:			@@text-c;
+	
+	a {
+		color: mix(@@text-c,@@bg-c,85%);
+		font-weight:bold;
+		&:hover {
+			text-decoration:underline;
+			color:auto;
+		}
+	}
+}
+
+/** flat states **/
+
+.stated-button(@which) when (@theme-flat = true)  {
+	@text-c:		~"btn-@{which}-color";
+	@bg-c:			~"btn-@{which}-bg";
+	
+	
+	.gradient-background(@@bg-c);
+	border: 		@border-thickness @border-style @@bg-c;
+    //box-shadow: 		0px 1px 0px @background;
+	color: 			@@text-c;
+	cursor:pointer;
+    &:hover {
+		
+        background-color: 	@@bg-c;
+        *background-color: 	@@bg-c;
+		color: 			@@text-c;
+    }
+	
+}
+
+.stated-object(@which) when (@theme-flat = true)  {
+	@text-c:	~"btn-@{which}-color";
+	@bg-c:		~"btn-@{which}-bg";
+	
+	background:		@@bg-c;
+	border:			@border-thickness @border-style @@bg-c;
+	color:			@@text-c;
+}
+
+
+.allButtonStates() {
+	&.danger {
+		.stated-button(~'danger');
+	}
+	&.info {
+		.stated-button(~'info');
+	}
+	&.primary {
+		.stated-button(~'primary');
+	}
+	&.default {
+		.stated-button(~'default');
+	}
+	&.success {
+		.stated-button(~'success');
+	}
+	&.warning {
+		.stated-button(~'warning');
+	}
+	&.inverse {
+		.stated-button(~'inverse');
+	}
+}
+
+.allButtonStates(@which) {
+	&.@{which}-danger {
+		.stated-button(~'danger');
+	}
+	&.@{which}-info {
+		.stated-button(~'info');
+	}
+	&.@{which}-primary {
+		.stated-button(~'primary');
+	}
+	&.@{which}-default {
+		.stated-button(~'default');
+	}
+	&.@{which}-success {
+		.stated-button(~'success');
+	}
+	&.@{which}-warning {
+		.stated-button(~'warning');
+	}
+	&.@{which}-inverse {
+		.stated-button(~'inverse');
+	}
+}
+
+.allObjectStates() {
+	&.danger {
+		.stated-object(~'danger');
+	}
+	&.info {
+		.stated-object(~'info');
+	}
+	&.primary {
+		.stated-object(~'primary');
+	}
+	&.default {
+		.stated-object(~'default');
+	}
+	&.success {
+		.stated-object(~'success');
+	}
+	&.warning {
+		.stated-object(~'warning');
+	}
+	&.inverse {
+		.stated-object(~'inverse');
+	}
+}
+
+.allObjectStates(@which) {
+	&.@{which}-danger {
+		.stated-object(~'danger');
+	}
+	&.@{which}-info {
+		.stated-object(~'info');
+	}
+	&.@{which}-primary {
+		.stated-object(~'primary');
+	}
+	&.@{which}-default {
+		.stated-object(~'default');
+	}
+	&.@{which}-success {
+		.stated-object(~'success');
+	}
+	&.@{which}-warning {
+		.stated-object(~'warning');
+	}
+	&.@{which}-inverse {
+		.stated-object(~'inverse');
+	}
+}
+
+
+
+
+
+.brandedHeaderBackground(@cola, @colb) when (@branded-tables = true) {
+	@col1:		~"brand-tone-@{cola}";
+	@col2:		~"brand-tone-@{colb}";
+	@media screen {
+		color: contrast(@@col1, @foreground, @background);
+		.gradient-background(@@col1, @@col2);
+	}
+	@media print {
+		.gradient-background(#ccc,#eee);
+		-webkit-print-color-adjust:economy;
+	}
+	
+}
+
+.brandedHeaderBackground(@cola, @colb) when (@branded-tables = false) {
+	
+	
+	@media screen {
+		color: contrast(@brand-default, @foreground, @background);
+		.gradient-background(@brand-default);
+	}
+	@media print {
+		.gradient-background(#ccc,#eee);
+		-webkit-print-color-adjust:economy;
+	}
+	
+}
+.highlightedHeaderBackground(@cola, @colb) when (@branded-tables = true) {
+	@col1:		~"brand-tone-@{cola}";
+	@col2:		~"brand-tone-@{colb}";
+	@s1: mix(@@col1,@brand-highlighted);
+	@s2: mix(@@col2,@brand-highlighted);
+	@media screen {
+		color: contrast(@@col1, @foreground, @background);
+		.gradient-background(@s1, @s2);
+	}
+	@media print {
+		.gradient-background(#ccc,#eee);
+		-webkit-print-color-adjust:economy;
+	}
+	
+}
+.highlightedHeaderBackground(@cola, @colb) when (@branded-tables = false) {
+	@col1:		~"tone-@{cola}";
+	@col2:		~"tone-@{colb}";
+	@s1: mix(@@col1,@brand-highlighted);
+	@s2: mix(@@col2,@brand-highlighted);
+	@media screen {
+		color: contrast(@@col1, @foreground, @background);
+		.gradient-background(@s1, @s2);
+	}
+	@media print {
+		.gradient-background(#ccc,#eee);
+		-webkit-print-color-adjust:economy;
+	}
+	
+}
+
+.colorBranded() when (@branded-navbar = true) {
+	color: contrast(@brand-color,@almost-white,@almost-black);
+}
+.colorBranded() when (@branded-navbar = false) {
+	color: contrast(@brand-default, @brand-color, mix(@brand-default,@brand-color,60%));
+}
+.brandedNavbar() when (@branded-navbar = true) {
+	@media screen {
+		&, .nav > li > a {
+			color: contrast(@brand-color,@almost-white,@almost-black);
+			&a:hover, &a:focus {
+				color: mix(@navbar-brand-link-color,@brand-color,60%);
+			}
+		}
+	}
+	.gradient-background(@brand-color,mix(@brand-color,@foreground,80%));
+	@media print {
+		.gradient-background(#ccc,#eee);
+		-webkit-print-color-adjust:economy;
+	}
+}
+.brandedNavbar() when (@branded-navbar = false) {
+	@media screen {
+		&, .nav > li > a {
+			color: contrast(@brand-default,@almost-white,@almost-black);
+			&:hover, &:focus {
+				color: contrast(@brand-default, @brand-color, mix(@brand-default,@brand-color,60%));
+			}
+		}
+		.gradient-background(@brand-default,mix(@brand-default,@foreground,80%));
+	}
+	@media print {
+		.gradient-background(#ccc,#eee);
+		-webkit-print-color-adjust:economy;
+	}
+	
+}
+
+.brandedTitles() when (@branded-titles = true) {
+	color: @brand-color;
+}
+
+.brandedTitles() when (@branded-titles = false) {}
+
+.text-outline(@color) {
+	text-shadow:	0 1px 0 @color, 0 -1px 0 @color, 1px 0 0 @color, -1px 0 0 @color;
+}
+
+
+.input-length(@which,@next,@dyn) {
+	@w: ~"input-@{which}-width";
+	width:@@w !important;
+	max-width:100%;
+	& + .input-icon {
+		right:auto !important;
+		left:@@w - @padding-base-vertical;
+		margin-left:-1.5em;
+	}
+	&.input-group, > .input-group {
+		> .input-btn ~ input{
+			width: @@w - @input-btn-width;	
+			
+		}
+		> .input-group-addon + input{
+			width: @@w - @input-addon-width;	
+		}
+
+		 > input.middle{
+			width: @@w - @input-addon-width - @input-btn-width;	
+		}
+	}
+	& when (@dyn=true) {
+		@media (min-width:@screen-lg-min){
+			.input-length(@next,~'',false);
+		}
+	}
+	@media (max-width:@screen-xs-max){
+		width: calc(~'100% - 30px') !important;
+		&.input-group, > .input-group {
+			> .input-btn ~ input{
+				width: calc(~'100% - 30px');//~"calc(100% - @{input-btn-width})";	
+				
+			}
+			> .input-group-addon + input{
+				width: calc(~'100% - 30px');// ~"calc(100% - @{input-addon-width})";	
+			}
+
+			 > input.middle{
+				width: calc(~'100% - 30px');// ~"calc(100% - @{input-addon-width} - @{input-btn-width})";	
+			}
+		}
+	}
+}
+.select-editor-wrapper:before, .input-editor-wrapper:before,  .select2-container:before, .edit-control>.input-group:before, .editor>.tree-editor:before {
+	font-family: FontAwesome;
+	right: -35px;
+	margin-left: @padding-base-horizontal;
+	top: 0;
+	font-size: 2.15em;
+	position: absolute;
+	font-weight: normal;
+}
+.browsers-editor .select-editor-wrapper:before {
+	display: none;
+}
+
+.input-tiny(@x){
+	.input-length(~'tiny',~'short',@x);
+}
+
+.input-short(@x){
+	.input-length(~'short',~'medium',@x);
+}
+.input-medium(@x){
+	.input-length(~'medium',~'long',@x);
+}
+.input-long(@x){
+	.input-length(~'long',~'huge',@x);
+}
+
+.input-huge(@x){
+	.input-length(~'huge',~'',false);
+}

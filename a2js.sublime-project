@@ -1,0 +1,28 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"app/*.js"
+			],
+			"folder_exclude_patterns":
+			[
+				"node_modules"
+			],
+			"path": "."
+		},
+		{
+			"path": "node_modules/bootstrap"
+		},
+		{
+			"path": "node_modules/grunt"
+		},
+		{
+			"path": "bbone"
+		},
+		{
+			"path": "/Users/ricky/Desktop/aws/app/video/Project (1)"
+		}
+	]
+}

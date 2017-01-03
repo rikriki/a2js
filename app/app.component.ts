@@ -6,7 +6,7 @@ declare var $:any
 @Component({
   selector: 'my-app',
   template: `<h1>Hello {{name}}</h1>
-  			<remote></remote>
+  			
   			<div>
 		        <label>Genre</label>
 		         
@@ -33,7 +33,7 @@ declare var $:any
 export class AppComponent implements AfterViewInit {
  name:String = 'Angular';
  titleValue:String 
- genres = ['Pop','rock'];
+ genres = ['pop','rock'];
  users:Array<any> = []
  filteredUsers:Array<any> = []
  genreSelected:String;
@@ -73,7 +73,6 @@ export class AppComponent implements AfterViewInit {
      }
      onSelect(genre:String){
      	console.log(genre)
-     	debugger
      	this.filteredUsers =_.filter(this.users,function(u){
      		return u.genre==genre
      	})

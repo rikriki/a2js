@@ -1,13 +1,20 @@
 import { NgModule }      from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+
 import { HttpModule } from '@angular/http';
 import { AppComponent }  from './app.component';
-import { remoteComponent }  from './remote.component';
+// import { UserComponent }  from './user.component';
+// import { ItemComponent }  from './item.component';
+// import { About }  from './about.component';
+// import { routing }  from './app.routing';
+
+
+
 
 @NgModule({
-  imports:      [ BrowserModule,HttpModule,FormsModule ],
-  declarations: [ AppComponent,remoteComponent ],
+  imports:      [ BrowserModule,FormsModule,HttpModule],
+  declarations: [ AppComponent],
   bootstrap:    [ AppComponent ]
 })
 export class AppModule { }

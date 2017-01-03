@@ -1,0 +1,139 @@
+// Provides access to the FontAwesome glyph font
+// variables.less defines all colours, as well as common dimensions
+@import "includes/variables.less";
+
+// mixins.less defines reusable snippets and helper functions
+@import "includes/mixins.less";
+
+
+
+/*
+ * BOOTSTRAP
+ * *********
+ * Note: NEVER include Bootstrap's variables.less file
+ */
+
+@bootstrap_path: "../../node_modules/bootstrap/less/";
+
+// Mixins
+@import "@{bootstrap_path}mixins.less";
+
+// Reset
+@import "@{bootstrap_path}normalize.less";
+@import "@{bootstrap_path}print.less";
+
+// Core CSS
+@import "@{bootstrap_path}scaffolding.less";
+@import "@{bootstrap_path}type.less";
+@import "@{bootstrap_path}code.less";
+@import "@{bootstrap_path}grid.less";
+@import "@{bootstrap_path}tables.less";
+@import "@{bootstrap_path}forms.less";
+@import "@{bootstrap_path}buttons.less";
+
+// Components
+@import "@{bootstrap_path}component-animations.less";
+//@import "glyphicons.less";
+@import "@{bootstrap_path}dropdowns.less";
+@import "@{bootstrap_path}button-groups.less";
+@import "@{bootstrap_path}input-groups.less";
+@import "@{bootstrap_path}navs.less";
+@import "@{bootstrap_path}navbar.less";
+@import "@{bootstrap_path}breadcrumbs.less";
+//@import "pagination.less";
+//@import "pager.less";
+@import "@{bootstrap_path}labels.less";
+@import "@{bootstrap_path}badges.less";
+//@import "jumbotron.less";
+//@import "thumbnails.less";
+@import "@{bootstrap_path}alerts.less";
+//@import "progress-bars.less";
+//@import "media.less";
+@import "@{bootstrap_path}list-group.less";
+@import "@{bootstrap_path}panels.less";
+@import "@{bootstrap_path}wells.less";
+@import "@{bootstrap_path}close.less";
+
+// Components w/ JavaScript
+@import "@{bootstrap_path}modals.less";
+@import "@{bootstrap_path}tooltip.less";
+@import "@{bootstrap_path}popovers.less";
+@import "@{bootstrap_path}carousel.less";
+		
+// Utility classes
+@import "@{bootstrap_path}utilities.less";
+@import "@{bootstrap_path}responsive-utilities.less";
+			
+
+	/*
+ * Bootstrap's theme.less
+ *
+ * I feel we *should* be importing this, but it unfortunately imports Bootstrap's variables.less, which we've already
+ * completely overridden. If we decide Bootstrap's theme.less is needed, we'll have to just chop it out to a separate
+ * file.
+	*/
+// @import "includes/bootstrap-theme.less";
+	
+// 		/*
+//  * Theme.less
+//  *
+//  * There's a LOT of content in this file that we either manually override, or just don't use.
+//  * Further, it's chock full of hardcoded colours.  As such, I'm picking over it and including only the relevant parts
+//  * in the file below.
+// 		*/
+
+// @import "includes/theme.less";
+	
+	
+
+
+			
+// 	/*
+//  * Finally, our Styling
+// 	*/
+	
+// // General Editor styling
+// @import "includes/editors.less"; // done!
+	
+// // Country Flags
+// @import "includes/flags.less"; // TODO: Path to flag image might be wrong
+	
+// // framework.less styles the main 'shell' of the UI - header, footer, nav & sidebar, content area (but not the content itself)
+// @import "includes/framework.less"; // done!
+		
+// // generic_classes.less defines project-wide thin classes - things like .monospace
+// @import "includes/generic_classes.less"; // done!
+		
+// // globals.less styles ubiquitous elements - the fullpage matte, modals, date filter field, etc
+// @import "includes/globals.less"; // done!
+			
+// // Views that only have a few lines of specific styling
+// @import "includes/lesser_views.less"; // done!
+			
+// // Note that 'module' is a bit of a loose term here, does not really line up with API modules at all
+// @import "includes/modules.less";
+			
+// // tables.less styles tables - I feel silly for even pointing that out
+// @import "includes/tables.less"; // done!
+		
+// // modals.less styles mnodals - I too feel silly for even pointing that out
+// @import "includes/modals.less"; // done!
+		
+// // widgets.less styles whole groups of like-elements, such as Select2
+// @import "includes/widgets.less"; // done!
+		
+// 	/*
+//  * THIRD PARTY STYLE SHEETS
+// 	*/
+	
+// // JSTree's stylesheet
+// @import "tree.less";
+
+// @import "toastr.less";
+
+// @import "pace.less";
+
+// //fixes to third-party styles.
+// @import "includes/shame.less";
+
+

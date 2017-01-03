@@ -3,15 +3,15 @@ import {Pipe,PipeTransform} from '@angular/core';
 
 @Pipe({ name: 'TitlePipe' })
 export class TitlePipe implements PipeTransform{
-
+	
   // Transform is the new "return function(value, args)" in Angular 1.x
-  transform(value, args?) {
+  transform(value:any) {
   	debugger
     // ES6 array destructuring
     // let [minAge] = args;
     // return value.filter(person => {
     //   return person.age >= +minAge;
-    });
+    };
   }
 
 
