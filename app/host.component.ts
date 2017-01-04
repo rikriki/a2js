@@ -5,4 +5,9 @@ import { Component } from '@angular/core';
   template: `<h1>welcome to this game {{name}}</h1>`,
 })
 
-export class remoteComponent  { name = 'player1'; }
+export class hostComponent  { name = 'player1';
+test(){
+	console.log('hellp')
+}
+ }
+}

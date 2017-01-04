@@ -37,10 +37,31 @@ var morgan = require('morgan')
 var io = require('socket.io').listen(server)
 
 io.sockets.on('connection',(socket)=>{
-  console.log('Socket Coonected!', socket)
+  console.log('Socket Coonected!', socket.id)
+  initGame(socket)
 })
+function initGame(socket){
+  socket.on('hostCreateNewGame',hostCreateNewGame)
+}
+function hostCreateNewGame(){
+   // Create a unique Socket.IO Room
+    var thisGameId = ( Math.random() * 100000 ) | 0;
+    console.log(thisGameId, ' ',this.id,"yow")
+    // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
+    this.emit('newGameCreated', {gameId: thisGameId, mySocketId: this.id});
 
+    // Join the Room and wait for the players
+    this.join(thisGameId.toString());
+}
 
+ // // Create a unique Socket.IO Room
+ //    var thisGameId = ( Math.random() * 100000 ) | 0;
+
+ //    // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
+ //    socket.emit('newGameCreated', {gameId: thisGameId, mySocketId: this.id});
+
+ //    // Join the Room and wait for the players
+ //    this.join(thisGameId.toString());
 
 
 
