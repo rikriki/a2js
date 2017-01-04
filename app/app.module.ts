@@ -5,6 +5,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { AppComponent }  from './app.component';
 import { hostComponent }  from './host.component';
+import { JoinComponent }  from './join.component';
+
 // import { UserComponent }  from './user.component';
 // import { ItemComponent }  from './item.component';
 // import { About }  from './about.component';
@@ -15,7 +17,7 @@ import { hostComponent }  from './host.component';
 
 @NgModule({
   imports:      [ BrowserModule,FormsModule,HttpModule],
-  declarations: [ AppComponent,hostComponent],
+  declarations: [ AppComponent,hostComponent,JoinComponent],
   entryComponents: [hostComponent],
   bootstrap:    [ AppComponent ]
 })

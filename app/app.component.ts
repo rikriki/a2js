@@ -1,7 +1,8 @@
-import { Component,AfterViewInit,ViewChild, ViewContainerRef, ComponentFactoryResolver  } from '@angular/core';
+import { Component,AfterViewInit,ViewChild, ViewContainerRef,ElementRef ComponentFactoryResolver  } from '@angular/core';
 
 import { PostsService } from './posts.service';
 import { hostComponent } from './host.component'
+import { JoinComponent } from './join.component'
 import {TitlePipe} from './TitlePipe';
 import * as io from 'socket.io-client';
 
@@ -14,7 +15,13 @@ declare var $:any
   			<div *ngIf="foo">
   				<host></host>
   			</div>
-  			<button (click)="createNewGame()">Create a new game</button>
+  			<div *ngIf="bar">
+  				<join></join>
+  			</div>
+  			<div *ngIf="bar==false">
+  				<button (click)="createNewGame()">Create a new game</button>
+  				<button (click)="joinGame()">Join a game</button>
+  			</div>
   			<div #remoteComponent></div>
   			<div>
 		        <label>Genre</label>
@@ -34,13 +41,16 @@ declare var $:any
   			</ul>`,
 
   providers:[PostsService],
+  directives:[hostComponent]
   // pipes: [TitlePipe]
 })
 
 //https://scotch.io/tutorials/how-to-deal-with-different-form-controls-in-angular-2
 
 export class AppComponent implements AfterViewInit {
- @ViewChild(hostComponent) host: hostComponent
+ @ViewChild(hostComponent) hostComp: hostComponent;
+ @ViewChild(JoinComponent) joinComp: JoinComponent;
+  @ViewChild('host') hostEl:ElementRef;
 private target: ViewContainerRef;
  name:String = 'Player';
  titleValue:String 
@@ -53,8 +63,11 @@ private target: ViewContainerRef;
  gameId:String
  mySocketId:String
  myRole:String
- host:String
+ hostID:String
+
+ 
  foo:boolean = false;
+ bar:boolean = false;
    //constructor(private builder: DynamicBuilder, private componentResolver: ComponentResolver) {}
 	 constructor(private postsService:PostsService,private componentFactoryResolver: ComponentFactoryResolver,
                 private viewContainerRef: ViewContainerRef ){
@@ -64,11 +77,11 @@ private target: ViewContainerRef;
 		  	// debugger
 		    console.log( 'Client: Connected to port ' );
 		} );
-		this.client.on('newGameCreated',this.onNewGameCreated)
+		this.client.on('newGameCreated',this.onNewGameCreated.bind(this))
 
 
 	 	let promises:any[] = [];
-	 	let self=this;
+	 	
 	    _.each(this.postsService.preload(),function(func:any,key:String){
 	        promises.push(func().then(
 	          (datas:any)=>{
@@ -109,7 +122,7 @@ private target: ViewContainerRef;
 
 	 }
 	 ngAfterViewInit(){
-		let self=this;
+		
      }
      onSelect(genre:String){
      	debugger
@@ -128,15 +141,21 @@ private target: ViewContainerRef;
      	this.client.emit('hostCreateNewGame');
      	
 	 }
-	 test(){
-	 	this.foo = true;
+
+	 joinGame(){
+	 	this.bar = true;
+	 }
+	 test(s){
+	 	
+	 	
+	 	this.hostComp.setRoom(s)
 	 }
 	 onNewGameCreated(data){
 	 	this.gameId = data.gameId;
 	 	this.mySocketId=data.mySocketId;
 	 	this.myRole ="Host"
-	 	this.host = data.mySocketId;
-
+	 	this.hostID = data.mySocketId;
+	 	this.hostComp.setRoom(data.gameId)
 
 
 	 	        
