@@ -5,6 +5,7 @@ import {PostsService} from './posts.service';
   template: `
         <div *ngIf="connected">
           Welcome {{player}}
+          <button (click)="stopVideo()">Stop</button>
           <div>
             <label>Genre</label>
              
@@ -80,6 +81,14 @@ export class JoinComponent  {
 		console.log("singer detail ", this.item)
     this.socket.emit('singerJoinRoom',this.item)
 	}
+  stopVideo(){
+     var data = {
+                    karaokeId: this.karaokeId,
+                    singerId: this.socket.id
+                   
+                }
+   this.socket.emit('singerStopVideo',data) 
+  }
   singerJoinedRoom(data:any){
 
     if(this.socket.id==data.mySocketId){

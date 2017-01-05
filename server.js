@@ -46,8 +46,13 @@ function initGame(socket){
   socket.on('hostCreateNewGame',hostCreateNewGame)
   socket.on('singerJoinRoom',singerJoinRoom)
   socket.on('singerSendSong',singerSendSong)
+  socket.on('singerStopVideo',singerStopVideo)
+  
   
 
+}
+function singerStopVideo(data){
+  io.sockets.in(data.karaokeId).emit('singerStopVideo');
 }
 function singerJoinRoom(data){
    // A reference to the player's Socket.IO socket object
@@ -74,8 +79,7 @@ function singerJoinRoom(data){
 }
 
 function singerSendSong(data){
-  console.log(data,"meow")
-  io.sockets.in(data.karaokeId).emit('hostPlaySong', data.videoId);
+  io.sockets.in(data.karaokeId).emit('hostReserveSong', data.videoId);
 }
 function hostCreateNewGame(){
    // Create a unique Socket.IO Room

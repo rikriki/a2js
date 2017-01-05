@@ -13,6 +13,7 @@ declare var $:any
 @Component({
   selector: 'my-app',
   template: `<h1>Hello {{name}}</h1>
+  			
 
   			<div *ngIf="foo">
   				<host></host>
@@ -69,25 +70,9 @@ private target: ViewContainerRef;
 		  	console.log( 'Client: Connected to port ' );
 		} );
 		this.client.on('newGameCreated',this.onNewGameCreated.bind(this))
-
-
-	 	let promises:any[] = [];
-	 	
-	    _.each(this.postsService.preload(),function(func:any,key:String){
-	        promises.push(func().then(
-	          (datas:any)=>{
-	            // let one:any ={[key]:datas} 
-	            return datas
-	          },(error:any)=>{
-	            this.errorMessage
-	          }
-	        ))
-      	})
-
+			
 	 }
-	 ngAfterViewInit(){
-		
-     }
+	 
      onSelect(genre:String){
      	console.log(genre)
      	this.filteredSongs =_.filter(this.songs,function(u:any){
