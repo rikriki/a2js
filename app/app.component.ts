@@ -1,4 +1,4 @@
-import { Component,AfterViewInit,ViewChild, ViewContainerRef,ElementRef ComponentFactoryResolver  } from '@angular/core';
+import { Component,AfterViewInit,ViewChild, ViewContainerRef,ElementRef,ComponentFactoryResolver  } from '@angular/core';
 
 import { PostsService } from './posts.service';
 import { hostComponent } from './host.component'
@@ -11,15 +11,16 @@ declare var $:any
 
 @Component({
   selector: 'my-app',
-  template: `<h1  (click)="test()">Hello {{name}}</h1>
+  template: `<h1>Hello {{name}}</h1>
+
   			<div *ngIf="foo">
   				<host></host>
   			</div>
-  			<div *ngIf="bar">
-  				<join></join>
+  			<div #join>
+  				
   			</div>
   			<div *ngIf="bar==false">
-  				<button (click)="createNewGame()">Create a new game</button>
+  				<button (click)="createNewGame()">Start Videoke</button>
   				<button (click)="joinGame()">Join a game</button>
   			</div>
   			<div #remoteComponent></div>
@@ -41,7 +42,10 @@ declare var $:any
   			</ul>`,
 
   providers:[PostsService],
-  directives:[hostComponent]
+  directives:[hostComponent],
+  entryComponents: [
+	JoinComponent
+	]
   // pipes: [TitlePipe]
 })
 
@@ -50,7 +54,9 @@ declare var $:any
 export class AppComponent implements AfterViewInit {
  @ViewChild(hostComponent) hostComp: hostComponent;
  @ViewChild(JoinComponent) joinComp: JoinComponent;
-  @ViewChild('host') hostEl:ElementRef;
+ @ViewChild('host') hostEl:ElementRef;
+ @ViewChild('join', { read: ViewContainerRef })
+ private join: any;
 private target: ViewContainerRef;
  name:String = 'Player';
  titleValue:String 
@@ -92,33 +98,6 @@ private target: ViewContainerRef;
 	          }
 	        ))
       	})
-      	
-      	
-
-	    // Promise.all(promises).then(function(results){
-	    // 	_.each(results,function(r){
-	    // 		self.items = JSON.parse(r._body)
-	    		
-	    // 		switch(self.items.type){
-	    // 			case 'songs' :
-	    // 				self.songs = self.items.items
-				 //    	self.filteredSongs=self.songs=_.map(self.songs,function(u:any,i:number){
-				 //    		return {
-				 //    			title:u.title,
-				 //    			genre:(i%2)?'Pop':'Rock'
-				 //    		}
-				 //    	})
-	    // 			break;
-	    // 			case 'genres':
-	    // 				self.genres = self.items.items
-	    // 				self.genreSelected = self.genres[0];
-	    // 			break;
-	    			
-
-
-	    // 		}
-	    // 	})
-	    // })
 
 	 }
 	 ngAfterViewInit(){
@@ -144,18 +123,25 @@ private target: ViewContainerRef;
 
 	 joinGame(){
 	 	this.bar = true;
+	 	// 
+	 	// const factory = this.componentFactoryResolver.resolveComponentFactory(JoinComponent);
+     	
+   //      const ref = this.viewContainerRef.createComponent(factory);
+   //      ref.changeDetectorRef.detectChanges();
+	 	// joinComp.initClient(this.client)
+
+	 	let componentFactory = this.componentFactoryResolver.resolveComponentFactory(JoinComponent);
+		this.join.createComponent(componentFactory);
+		componentFactory.componentType.prototype.initClient(this.client)
+
 	 }
-	 test(s){
-	 	
-	 	
-	 	this.hostComp.setRoom(s)
-	 }
+	 
 	 onNewGameCreated(data){
 	 	this.gameId = data.gameId;
 	 	this.mySocketId=data.mySocketId;
 	 	this.myRole ="Host"
 	 	this.hostID = data.mySocketId;
-	 	this.hostComp.setRoom(data.gameId)
+	 	this.hostComp.initHost(data.gameId,this.client)
 
 
 	 	        

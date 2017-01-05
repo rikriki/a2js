@@ -33,25 +33,58 @@ var connection = mysql.createConnection({
 var morgan = require('morgan')
 
 
-
+var sockets;
 var io = require('socket.io').listen(server)
 
 io.sockets.on('connection',(socket)=>{
+  
   console.log('Socket Coonected!', socket.id)
   initGame(socket)
 })
 function initGame(socket){
+  sockets = socket;
   socket.on('hostCreateNewGame',hostCreateNewGame)
+  socket.on('singerJoinRoom',singerJoinRoom)
+
+}
+function singerJoinRoom(data){
+   // A reference to the player's Socket.IO socket object
+    var sock = this;
+
+    // Look up the room ID in the Socket.IO manager object.
+    console.log(io.sockets.adapter.rooms, " === ", data)
+    //var room = socket.manager.rooms["/" + data.gameId];
+    var room =io.sockets.adapter.rooms[data.id]
+    console.log(room,"meaow")
+    // If the room exists...
+    if( room != undefined ){
+        // attach the socket id to the data object.
+        data.mySocketId = sock.id;
+
+        // Join the room
+        sock.join(data.id);
+
+        console.log('Player ' + data.name + ' joining game: ' + data.id );
+
+        // Emit an event notifying the clients that the player has joined the room.
+        io.sockets.in(data.id).emit('playerJoinedRoom', data);
+
+    } else {
+        // Otherwise, send an error message back to the player.
+        this.emit('error',{message: "This room does not exist."} );
+    }
 }
 function hostCreateNewGame(){
    // Create a unique Socket.IO Room
+
     var thisGameId = ( Math.random() * 100000 ) | 0;
-    console.log(thisGameId, ' ',this.id,"yow")
+    // console.log(this,"yow")
     // Return the Room ID (gameId) and the socket ID (mySocketId) to the browser client
     this.emit('newGameCreated', {gameId: thisGameId, mySocketId: this.id});
 
     // Join the Room and wait for the players
     this.join(thisGameId.toString());
+    
 }
 
  // // Create a unique Socket.IO Room
@@ -121,7 +154,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/songs', function(req, res) {
-    var sql = "SELECT title FROM `karaoke_videos`"
+    var sql = "SELECT title,videoId FROM `karaoke_videos`"
     getResults(sql, function(err, results) {
         if(err)
           res.send({result:err})

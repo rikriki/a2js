@@ -1,0 +1,84 @@
+import { Component,AfterViewInit } from '@angular/core';
+import {PostsService} from './posts.service';
+
+@Component({
+  selector: 'host',
+  template: `<h1>welcome to this game {{roomId}}</h1>
+  <div>
+		        <label>Genre</label>
+		         
+		            <select  
+		            	[(ngModel)]="genreSelected"
+		            	(change) ="onSelect($event.target.value)"
+		            >
+		                <option *ngFor="let x of genres" [value]="x.videoId" (click)="setVideo(x.videoId)" >{{x.type}}</option>
+		            </select>
+		        
+		    </div>
+  			<ul>
+  				<li *ngFor="let song of (filteredSongs)">
+  					<b></b><span>{{song.title}} | {{song.genre}}</span>
+  				</li>
+  			</ul>
+  `,
+  providers:[PostsService];
+})
+// $('<iframe>', {
+//    src: 'http://www.youtube.com/embed/dD3I4k0gA2M',
+//    id:  'myFrame',
+//    frameborder: 0,
+//    scrolling: 'no',
+//    width:'800',
+//    height:'500',allowfullscreen:true,
+//    }).appendTo('.video');
+
+export class hostComponent implements AfterViewInit  {
+	roomId = '';
+	private genreSelected:String;
+	private filteredSongs:Array<any>;
+	private songs:Array<any> = [];
+	private genres:Array<any> = [];
+	
+	constructor(private postsService:PostsService){
+		let promises:any[] = [];
+	 	let self = this;
+	    _.each(this.postsService.preload(),function(func:any,key:String){
+	        promises.push(func().then(
+	          (datas:any)=>{
+	            // let one:any ={[key]:datas} 
+	            return datas
+	          },(error:any)=>{
+	            this.errorMessage
+	          }
+	        ))
+      	})
+		Promise.all(promises).then(function(results){
+	    	_.each(results,function(r){
+	    		self.items = JSON.parse(r._body)
+	    		
+	    		switch(self.items.type){
+	    			case 'songs' :
+	    				self.songs = self.items.items
+				    	self.filteredSongs=self.songs=_.map(self.songs,function(u:any,i:number){
+				    		return {
+				    			title:u.title,
+				    			genre:(i%2)?'Pop':'Rock'
+				    		}
+				    	})
+	    			break;
+	    			case 'genres':
+	    				self.genres = self.items.items
+	    				self.genreSelected = self.genres[0];
+	    			break;
+	    		}
+	    	})
+	    })
+	}
+	initHost(roomID:String,socket){
+		this.roomId = roomID
+		console.log("Room number is ", roomID)
+	}
+	setVideo(songID:String){
+
+	}
+}
