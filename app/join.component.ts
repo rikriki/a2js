@@ -53,16 +53,16 @@ export class JoinComponent  {
   private filteredSongs:Array<any>;
   private songs:Array<any> = [];
   private genres:Array<any> = [];
-  private postsService:PostsService;
+  
   constructor(private postsService:PostsService){
-    this.postsService = postsService
+    
   }
 
 	initClient(socket:any){
     
     this.socket = socket
     this.socket.on('singerJoinedRoom',this.singerJoinedRoom.bind(this));
-    this.player="" 
+    //this.player="" 
     this.connected=false; 
     // this.postsService;
   }

@@ -38,7 +38,7 @@ declare var $:any
 
 //https://scotch.io/tutorials/how-to-deal-with-different-form-controls-in-angular-2
 
-export class AppComponent implements AfterViewInit {
+export class AppComponent {
  @ViewChild(hostComponent) hostComp: hostComponent;
  @ViewChild(JoinComponent) joinComp: JoinComponent;
  @ViewChild('host') hostEl:ElementRef;

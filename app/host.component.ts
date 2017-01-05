@@ -16,34 +16,42 @@ export class hostComponent implements AfterViewInit {
 	user:number
 	socket:any;
 	player:any;
-	reserve:Array<string>
+	reserve:Array<string> =[]
 	constructor(private postsService:PostsService){
 		let promises:any[] = [];
 	 	
 	}
-	initHost(roomID:String,socket:any){
+	initHost(roomID:string,socket:any){
 		this.socket = socket
 		this.roomId = roomID
 		this.user = 0;
 		console.log("Room number is ", roomID)
 		this.socket.on('singerJoinedRoom',this.singerJoinedRoom.bind(this));
 		this.socket.on('hostReserveSong',this.hostReserveSong.bind(this));
+		this.socket.on('hostStopVideo',this.hostStopVideo.bind(this));
+
+		
 		
 	}
-	setVideo(songID:String){
+	setVideo(songID:string){
 
 	}
 	singerJoinedRoom(data:any){
 		this.user = this.user + 1;
 		console.log(data.name, " Joine the game.")
 	}
-	hostReserveSong(videoId:String){
+	hostReserveSong(videoId:string){
 		// $('#videokeScreen').attr('src','http://www.youtube.com/embed/'+videoId+'?autoplay=1')
 		
 		this.reserve.push(videoId)
 	}
+	hostStopVideo(){
+		// $('#videokeScreen').attr('src','http://www.youtube.com/embed/'+videoId+'?autoplay=1')
+		
+		this.player.pauseVideo()
+	}
 	hostPlayedSong(){
-		this.player.loadVideoById(this.reserve.push, 15, "large")	
+		this.player.loadVideoById(this.reserve.shift(), 15, "large")	
 	}
 
 	ngAfterViewInit() {
@@ -55,7 +63,7 @@ export class hostComponent implements AfterViewInit {
           videoId: 'M7lc1UVf-VE',
           events: {
             'onReady': this.onPlayerReady,
-            'onStateChange': this.onPlayerStateChange
+            'onStateChange': this.onPlayerStateChange.bind(this)
           }
         });
 	}
@@ -72,7 +80,7 @@ export class hostComponent implements AfterViewInit {
 		// 5 (video cued).
 
     	
-        if (event.data == 0 || event.data == 2 ) {
+        if (event.data == 0 || event.data == 2) {
           console.log('done, play next!')
           if(this.reserve.length){
 			this.hostPlayedSong()	

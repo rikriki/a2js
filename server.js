@@ -52,7 +52,7 @@ function initGame(socket){
 
 }
 function singerStopVideo(data){
-  io.sockets.in(data.karaokeId).emit('singerStopVideo');
+  io.sockets.in(data.karaokeId).emit('hostStopVideo');
 }
 function singerJoinRoom(data){
    // A reference to the player's Socket.IO socket object
