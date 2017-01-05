@@ -1,3 +1,4 @@
+
 import { Component,AfterViewInit,ViewChild, ViewContainerRef,ElementRef,ComponentFactoryResolver  } from '@angular/core';
 
 import { PostsService } from './posts.service';
@@ -24,25 +25,10 @@ declare var $:any
   				<button (click)="joinGame()">Join a game</button>
   			</div>
   			<div #remoteComponent></div>
-  			<div>
-		        <label>Genre</label>
-		         
-		            <select  
-		            	[(ngModel)]="genreSelected"
-		            	(change) ="onSelect($event.target.value)"
-		            >
-		                <option *ngFor="let x of genres" [value]="x.type" >{{x.type}}</option>
-		            </select>
-		        
-		    </div>
-  			<ul>
-  				<li *ngFor="let song of (filteredSongs)">
-  					<b></b><span>{{song.title}} | {{song.genre}}</span>
-  				</li>
-  			</ul>`,
+  			
+  			`,
 
   providers:[PostsService],
-  directives:[hostComponent],
   entryComponents: [
 	JoinComponent
 	]
@@ -80,8 +66,7 @@ private target: ViewContainerRef;
 	 	
 	 	this.client = io.connect('http://localhost:1338');
 	 	this.client.on( "connect", function () {
-		  	// debugger
-		    console.log( 'Client: Connected to port ' );
+		  	console.log( 'Client: Connected to port ' );
 		} );
 		this.client.on('newGameCreated',this.onNewGameCreated.bind(this))
 
@@ -104,7 +89,6 @@ private target: ViewContainerRef;
 		
      }
      onSelect(genre:String){
-     	debugger
      	console.log(genre)
      	this.filteredSongs =_.filter(this.songs,function(u:any){
      		return u.genre==genre
@@ -129,14 +113,12 @@ private target: ViewContainerRef;
    //      const ref = this.viewContainerRef.createComponent(factory);
    //      ref.changeDetectorRef.detectChanges();
 	 	// joinComp.initClient(this.client)
-
 	 	let componentFactory = this.componentFactoryResolver.resolveComponentFactory(JoinComponent);
-		this.join.createComponent(componentFactory);
-		componentFactory.componentType.prototype.initClient(this.client)
-
+		let joinRef = this.join.createComponent(componentFactory);
+		joinRef.instance.initClient(this.client)
 	 }
 	 
-	 onNewGameCreated(data){
+	 onNewGameCreated(data:any){
 	 	this.gameId = data.gameId;
 	 	this.mySocketId=data.mySocketId;
 	 	this.myRole ="Host"

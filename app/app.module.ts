@@ -14,7 +14,6 @@ import { JoinComponent }  from './join.component';
 
 
 
-
 @NgModule({
   imports:      [ BrowserModule,FormsModule,HttpModule],
   declarations: [ AppComponent,hostComponent,JoinComponent],

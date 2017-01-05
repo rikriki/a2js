@@ -45,17 +45,15 @@ function initGame(socket){
   sockets = socket;
   socket.on('hostCreateNewGame',hostCreateNewGame)
   socket.on('singerJoinRoom',singerJoinRoom)
+  socket.on('singerSendSong',singerSendSong)
+  
 
 }
 function singerJoinRoom(data){
    // A reference to the player's Socket.IO socket object
     var sock = this;
 
-    // Look up the room ID in the Socket.IO manager object.
-    console.log(io.sockets.adapter.rooms, " === ", data)
-    //var room = socket.manager.rooms["/" + data.gameId];
     var room =io.sockets.adapter.rooms[data.id]
-    console.log(room,"meaow")
     // If the room exists...
     if( room != undefined ){
         // attach the socket id to the data object.
@@ -67,12 +65,17 @@ function singerJoinRoom(data){
         console.log('Player ' + data.name + ' joining game: ' + data.id );
 
         // Emit an event notifying the clients that the player has joined the room.
-        io.sockets.in(data.id).emit('playerJoinedRoom', data);
+        io.sockets.in(data.id).emit('singerJoinedRoom', data);
 
     } else {
         // Otherwise, send an error message back to the player.
         this.emit('error',{message: "This room does not exist."} );
     }
+}
+
+function singerSendSong(data){
+  console.log(data,"meow")
+  io.sockets.in(data.karaokeId).emit('hostPlaySong', data.videoId);
 }
 function hostCreateNewGame(){
    // Create a unique Socket.IO Room
