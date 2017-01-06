@@ -1,3 +1,7 @@
+.webGl{
+  position: absolute;
+  z-index: -1
+}
 .introTitle{
   font-size: 5em;
 }

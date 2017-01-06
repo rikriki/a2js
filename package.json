@@ -38,6 +38,7 @@
     "express-device": "~0.3.7",
     "grunt": "^1.0.1",
     "grunt-cli": "^1.2.0",
+    "gsap": "^1.19.0",
     "lodash": "^4.17.2",
     "morgan": "1.7.0",
     "node-mysql": "^0.4.2",

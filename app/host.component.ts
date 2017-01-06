@@ -71,7 +71,7 @@ export class hostComponent implements AfterViewInit {
       this.player = new YT.Player('player', {
           height: '500',
           width: '800',
-          videoId: 'M7lc1UVf-VE',
+          videoId: 'wT0LvyWt8',
           events: {
             'onReady': this.onPlayerReady,
             'onStateChange': this.onPlayerStateChange.bind(this)
