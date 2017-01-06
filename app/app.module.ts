@@ -6,6 +6,8 @@ import { HttpModule } from '@angular/http';
 import { AppComponent }  from './app.component';
 import { hostComponent }  from './host.component';
 import { JoinComponent }  from './join.component';
+import {NavComponent} from './nav.component';
+
 
 // import { UserComponent }  from './user.component';
 // import { ItemComponent }  from './item.component';
@@ -16,7 +18,7 @@ import { JoinComponent }  from './join.component';
 
 @NgModule({
   imports:      [ BrowserModule,FormsModule,HttpModule],
-  declarations: [ AppComponent,hostComponent,JoinComponent],
+  declarations: [ AppComponent,hostComponent,JoinComponent,NavComponent],
   entryComponents: [hostComponent],
   bootstrap:    [ AppComponent ]
 })

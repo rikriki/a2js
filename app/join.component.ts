@@ -1,58 +1,70 @@
-import { Component } from '@angular/core';
+import { Component,EventEmitter } from '@angular/core';
 import {PostsService} from './posts.service';
+import {NavComponent} from './nav.component'
+declare var $:any
+declare var _:any
 @Component({
   selector: 'join',
   template: `
+  <navigation></navigation>
+  <div class="container">
+    <div class="row">
         <div *ngIf="connected">
           Welcome {{player}}
           <button (click)="stopVideo()">Stop</button>
           <div>
             <label>Genre</label>
              
-                <select  
+                <select class="formControl" 
                   [(ngModel)]="genreSelected"
                   (change) ="onSelect($event.target.value)">
                     <option *ngFor="let x of genres" [value]="x.videoId" (click)="setVideo(x.videoId)" >{{x.type}}</option>
                 </select>
           </div>
-          <ul>
-            <li *ngFor="let song of (filteredSongs)" (click)="selectSong(song.videoId)">
-              <b></b><span>{{song.title}} | {{song.genre}}</span>
-            </li>
-          </ul>
+          <div class="list-group songLists">
+            <button type="button" class="list-group-item" *ngFor="let song of (filteredSongs)" (click)="selectSong(song.videoId)">
+              {{song.title}} | {{song.genre}}
+            </button>
+          </div>
 
         </div>
         <div *ngIf="connected==false">
           <h1>Join a room</h1>
-    			<div class="info">
-                  <label for="inputPlayerName">Your Name:</label>
-                  <input id="inputPlayerName" type="text" [(ngModel)]="item.name" />
+    			<div class="info form-group">
+                  <label class="control-label" for="inputPlayerName">Your Name:</label>
+                  <input id="inputPlayerName"  class="form-control" type="text" [(ngModel)]="item.name" />
               </div>
 
-              <div class="info">
-                  <label for="inputGameId">Game ID:</label>
-                  <input id="inputGameId" [(ngModel)]="item.id" type="text"/>
+              <div class="info form-group">
+                  <label for="inputGameId" class="control-label">Game ID:</label>
+                  <input  class="form-control" id="inputGameId" [(ngModel)]="item.id" type="text"/>
               </div>
-              <button (click)="joinRoom()">Join</button>
+              <button (click)="joinRoom()" class="btn btn-primary">Join</button>
         </div>
+    </div>
+  </div>
   `,
   providers:[PostsService]
 })
 
 export class JoinComponent  {
 	private item:any = {
-		name:'',
+		type:'',
 		id:''
 	}
   private connected:Boolean
-  privateplayer:String
+  private player:String
   socket:any;
   mySocketId:String
   karaokeId:String
+  
   private genreSelected:String;
   private filteredSongs:Array<any>;
   private songs:Array<any> = [];
   private genres:Array<any> = [];
+
+  private items:any;
+
   
   constructor(private postsService:PostsService){
     
@@ -61,9 +73,11 @@ export class JoinComponent  {
 	initClient(socket:any){
     
     this.socket = socket
-    this.socket.on('singerJoinedRoom',this.singerJoinedRoom.bind(this));
-    //this.player="" 
-    this.connected=false; 
+
+    this.socket.on('singerJoinedRoom',this.singerJoinedRoom.bind(this))
+    
+    this.connected=false
+
     // this.postsService;
   }
   selectSong(videoId:String){
@@ -108,7 +122,7 @@ export class JoinComponent  {
             ))
       })
       Promise.all(promises).then(function(results){
-        _.each(results,function(r){
+        _.each(results,function(r:any){
           self.items = JSON.parse(r._body)
           
           switch(self.items.type){
