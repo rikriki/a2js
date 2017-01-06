@@ -12,7 +12,18 @@ declare var $:any
 
 @Component({
   selector: 'my-app',
-  template: `<h1>Hello {{name}}</h1>
+  template: `
+  		<div class="container introContainer" *ngIf="foo==false && bar==false">
+  			<div class="row text-center introBox">
+  				<h1 class="introTitle">M-Karaoke.IO</h1>
+		  		<div *ngIf="bar==false">
+	  				<button class="btn btn-primary" (click)="createNewGame()">Create Karaoke Room</button>
+	  				<button class="btn btn-primary" (click)="joinGame()" >Join a Room</button>
+	  			</div>
+  			</div>
+
+  		</div>
+  			
   			
 
   			<div *ngIf="foo">
@@ -21,10 +32,7 @@ declare var $:any
   			<div #join>
   				
   			</div>
-  			<div *ngIf="bar==false">
-  				<button (click)="createNewGame()">Start Videoke</button>
-  				<button (click)="joinGame()">Join a game</button>
-  			</div>
+
   			<div #remoteComponent></div>
   			
   			`,
@@ -38,7 +46,7 @@ declare var $:any
 
 //https://scotch.io/tutorials/how-to-deal-with-different-form-controls-in-angular-2
 
-export class AppComponent implements AfterViewInit {
+export class AppComponent  {
  @ViewChild(hostComponent) hostComp: hostComponent;
  @ViewChild(JoinComponent) joinComp: JoinComponent;
  @ViewChild('host') hostEl:ElementRef;

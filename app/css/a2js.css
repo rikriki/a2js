@@ -1,3 +1,40 @@
+.introTitle{
+  font-size: 5em;
+}
+.introBox{
+    border-radius: 20px;
+    margin-top: 80px;
+}
+.singers{
+      position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+}
+
+span.icon {
+    position: relative;
+    font-size: 20px;
+    padding: 5px;
+}
+span > b{
+    position: absolute;
+    padding: 1px 5px 0px;
+    right: -8px;
+    top: -4px;
+    border-radius: 20px;
+    font-size: 17px;
+    font-family: arial;
+}
+
+
+
+
+/*Singer playlist*/
+.songLists{
+    height: 60vh;
+    overflow: scroll;
+}
 .loading {
   position: absolute;
   top: 50%;

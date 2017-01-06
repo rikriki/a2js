@@ -1,11 +1,18 @@
 import { Component,AfterViewInit } from '@angular/core';
 import { PostsService } from './posts.service';
 declare var $:any
+declare var YT:any
 @Component({
   selector: 'host',
-  template: `<h1>welcome to this videoke {{roomId}}</h1>
- 		     <div>Number of user{{user}}</div>
- 		     <div id="player"></div>
+  template: `<div class="container">
+	  			<div class="row text-center">
+	  				<h1> Welcome to M-Karaoke.IO</h1>
+	  				<p>Visit this link http://localhost:3002 and join with this id:{{roomId}}</p>
+			  		<div class="singers btn-primary"><span class="glyphicon glyphicon-user icon btn-lg" aria-hidden="true"><b class="text-primary btn-default">{{user}}</b></span></div>
+ 		     		<div id="player"></div>
+	  			</div>
+
+	  		</div>
   `,
   providers:[PostsService]
   
@@ -13,10 +20,11 @@ declare var $:any
 // <iframe src="http://www.youtube.com/embed/dD3I4k0gA2M" id="videokeScreen" frameborder="0" scrolling="no" allowfullscreen="true" style="width: 800px; height: 500px;"></iframe>
 export class hostComponent implements AfterViewInit {
 	roomId:String
-	user:number
+	user:number = 0;
 	socket:any;
 	player:any;
-	reserve:Array<string>
+	homepage:String
+	reserve:Array<any>=[]
 	constructor(private postsService:PostsService){
 		let promises:any[] = [];
 	 	
@@ -25,6 +33,7 @@ export class hostComponent implements AfterViewInit {
 		this.socket = socket
 		this.roomId = roomID
 		this.user = 0;
+		this.homepage = window.location.origin
 		console.log("Room number is ", roomID)
 		this.socket.on('singerJoinedRoom',this.singerJoinedRoom.bind(this));
 		this.socket.on('hostReserveSong',this.hostReserveSong.bind(this));
@@ -43,7 +52,7 @@ export class hostComponent implements AfterViewInit {
 		this.reserve.push(videoId)
 	}
 	hostPlayedSong(){
-		this.player.loadVideoById(this.reserve.push, 15, "large")	
+		this.player.loadVideoById(this.reserve.shift(), 15, "large")	
 	}
 
 	ngAfterViewInit() {
@@ -55,15 +64,15 @@ export class hostComponent implements AfterViewInit {
           videoId: 'M7lc1UVf-VE',
           events: {
             'onReady': this.onPlayerReady,
-            'onStateChange': this.onPlayerStateChange
+            'onStateChange': this.onPlayerStateChange.bind(this)
           }
         });
 	}
 	 
-    onPlayerReady(event) {
+    onPlayerReady(event:any) {
        event.target.playVideo();
     }
-    onPlayerStateChange(event) {
+    onPlayerStateChange(event:any) {
   		//-1 (unstarted)
 		// 0 (ended)
 		// 1 (playing)
