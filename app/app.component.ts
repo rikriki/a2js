@@ -74,8 +74,12 @@ private target: ViewContainerRef;
  geometry:any 
  material:any 
  mesh:any
+ meshX:number = 0
  foo:boolean = false;
  bar:boolean = false;
+ 
+
+ meshes:Array<any>
  animID:any
    //constructor(private builder: DynamicBuilder, private componentResolver: ComponentResolver) {}
 	 constructor(private postsService:PostsService,private componentFactoryResolver: ComponentFactoryResolver,
@@ -86,7 +90,7 @@ private target: ViewContainerRef;
 		  	console.log( 'Client: Connected to port ' );
 		} );
 		this.client.on('newGameCreated',this.onNewGameCreated.bind(this))
-		
+		this.meshes=[];
 		this.init();
 		this.animate();	
 	 }
@@ -141,28 +145,69 @@ private target: ViewContainerRef;
 	    this.camera.position.z = 1000;
 	    this.geometry = new THREE.BoxGeometry( 200, 200, 200 );
 	    this.material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
-	    this.mesh = new THREE.Mesh( this.geometry, this.material );
-	    this.scene.add( this.mesh );
+	    //this.mesh = new THREE.Mesh( this.geometry, this.material );
+	   	this.meshes.push(new THREE.Mesh( this.geometry, this.material ))
+	   	this.meshes.push(new THREE.Mesh( this.geometry, this.material ))
+	   	this.meshes.push(new THREE.Mesh( this.geometry, this.material ))
+	   	this.meshes.push(new THREE.Mesh( this.geometry, this.material ))
+	    this.scene.add( this.meshes[0] );
+	    this.scene.add( this.meshes[1] );
 	    this.renderer = new THREE.WebGLRenderer();
 	    this.renderer.setSize( window.innerWidth, window.innerHeight );
-	   	TweenMax.to(this.mesh.position,2,{
-	   		x:400
-	   	})
-	   	TweenMax.to(this.mesh.rotation,1000,{
-	   		x:1000
-	   	})
+	   	
+
+	   	this.animateParticle();
+	   	
 	    //document.body.appendChild( this.renderer.domElement );
 
+	}
+	animateParticle(){
+		//this.mesh.position.x=0
+		
+		var self= this
+		_.each(this.meshes,function(m){
+			m.position.x = 0;
+			TweenMax.to(m.position,2,{
+		   		x:800,
+		   		onComplete:self.animateParticle.bind(self)
+		   	})
+
+		   	TweenMax.to(m.rotation,1000,{
+		   		x:1000
+		   	})
+		   	
+		   	TweenMax.to(m.scale,2,{
+		   		x:4,
+		   		y:4,
+		   		z:4,
+		   		repeat:-1
+		   	})	
+		})
+		// TweenMax.to(this.mesh.position,2,{
+	 //   		x:800,
+	 //   		onComplete:this.animateParticle.bind(this)
+	 //   	})
+
+	 //   	TweenMax.to(this.mesh.rotation,1000,{
+	 //   		x:1000
+	 //   	})
+	   	
+	 //   	TweenMax.to(this.mesh.scale,2,{
+	 //   		x:4,
+	 //   		y:4,
+	 //   		z:4,
+	 //   		repeat:-1
+	 //   	})
 	}
 	ngAfterViewInit(){
 		$(this.webGl.nativeElement).append( this.renderer.domElement );
 	}
 	animate() {
 	    this.animID = requestAnimationFrame( this.animate.bind(this));
-	    this.mesh.rotation.x += 0.01;
-	    this.mesh.rotation.y += 0.02;
-	    this.mesh.position.y += 2.2;
-	    this.mesh.position.z += 2.2;
+	    // this.mesh.rotation.x += 0.01;
+	    // this.mesh.rotation.y += 0.02;
+	    // this.mesh.position.y += 2.2;
+	    // this.mesh.position.z += 2.2;
 
 	    this.renderer.render( this.scene, this.camera );
 	   
