@@ -1,3 +1,86 @@
+/*@import "compass/css3";
+
+$height-mask: 250px;
+
+// To regulate alpha is recommended to use gray scale.
+// Recomiendo utilizar escala de grises
+
+$darken: 60%;
+
+$color: rgb(255,255,255);
+$color-alpha: darken( $color, $darken );
+
+// Apply color here!
+// Todo el color que quieras!
+$color-base: rgb(0,0,0);*/
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizelegibility;
+}
+
+html,
+body{
+  height: 100%;
+}
+
+body{
+  /*font-family: 'Open Sans', sans-serif;*/
+  font-family: Helvetica;
+}
+
+.text{
+  position: fixed;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 250px;
+  z-index: 10;
+  margin-top: -125px;
+
+}
+.text-button{
+    position: absolute;
+    bottom: 19%;
+    left: 50%;
+    margin-left: -18;
+    
+    transform: translate(-50%,0);
+}
+svg{
+  width: 100%;
+  height: inherit;
+  text-anchor: middle;
+  
+}
+svg > .text{
+    text-anchor: middle;
+    
+  }
+  #alpha{
+    fill: rgba(255,255,255,.6);
+    
+  }
+  #title{
+    letter-spacing: -4px;
+    font-size: 6em;
+    font-weight: 800;
+    transform: translate(50%,0%)!important;
+    opacity: .8;
+    fill:black;
+    text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb, 0 4px 0 #b9b9b9, 0 5px 0 #aaa, 0 6px 1px rgba(0,0,0,.1), 0 0 5px rgba(0,0,0,.1), 0 1px 3px rgba(0,0,0,.3), 0 3px 5px rgba(0,0,0,.2), 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.2), 0 20px 20px rgba(0,0,0,.15);
+  }
+  
+  #base{
+    fill: rgba(255,255,255,.5);
+    mask: url(#masked);
+  }
+
+
+
+
+
 .webGl{
   position: absolute;
   z-index: -1
@@ -38,6 +121,7 @@ span > b{
 .songLists{
     height: 60vh;
     overflow: scroll;
+    color: black;
 }
 .loading {
   position: absolute;

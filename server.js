@@ -41,18 +41,34 @@ io.sockets.on('connection',(socket)=>{
   console.log('Socket Coonected!', socket.id)
   initGame(socket)
 })
+
+var songs = require('./songsSmall');
+var testing = true;
+
+
+
 function initGame(socket){
   sockets = socket;
   socket.on('hostCreateNewGame',hostCreateNewGame)
   socket.on('singerJoinRoom',singerJoinRoom)
   socket.on('singerSendSong',singerSendSong)
-  socket.on('singerStopVideo',singerStopVideo)
+  socket.on('singerRemoveSong',singerRemoveSong)
+  socket.on('singerSendCommand',singerSendCommand)
+  socket.on('hostRemoveReserve',hostRemoveReserve)
+  
+  
   
   
 
 }
-function singerStopVideo(data){
-  io.sockets.in(data.karaokeId).emit('hostStopVideo');
+function hostRemoveReserve(data){
+  io.sockets.in(data.singerId).emit('singerRemoveItemPlaylist', data);
+} 
+function singerRemoveSong(data){
+  io.sockets.in(data.karaokeId).emit('hostRemoveItemPlaylist', data);
+}
+function singerSendCommand(data){
+  io.sockets.in(data.karaokeId).emit('hostReceivedCommand', data);
 }
 function singerJoinRoom(data){
    // A reference to the player's Socket.IO socket object
@@ -74,12 +90,12 @@ function singerJoinRoom(data){
 
     } else {
         // Otherwise, send an error message back to the player.
-        this.emit('error',{message: "This room does not exist."} );
+        io.sockets.emit('OnError',{message: "This room does not exist."} );
     }
 }
 
 function singerSendSong(data){
-  io.sockets.in(data.karaokeId).emit('hostReserveSong', data.videoId);
+  io.sockets.in(data.karaokeId).emit('hostReserveSong', data);
 }
 function hostCreateNewGame(){
    // Create a unique Socket.IO Room
@@ -159,15 +175,20 @@ app.get('/', function(req, res) {
   res.render('index.html');
   
 });
-
+var cachedSongs;
 app.get('/songs', function(req, res) {
+  console.log(testing, " songs")
+  if(testing){
+      res.send({type:'songs',items:songs.items})
+  }else{
     var sql = "SELECT title,videoId FROM `karaoke_videos`"
     getResults(sql, function(err, results) {
         if(err)
           res.send({result:err})
-  
+        cachedSongs = {type:'songs',items:results}
         res.send({type:'songs',items:results})
     })
+  }
 });
 app.get('/genres', function(req, res) {
     var sql = "SELECT type FROM `karaoke_genres` group by `type`"

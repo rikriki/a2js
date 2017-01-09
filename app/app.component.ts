@@ -19,15 +19,20 @@ declare var THREEx:any
   selector: 'my-app',
   template: `
 		<div class="webGl" #webGl *ngIf="foo==false && bar==false"></div>
-  		<div class="container introContainer" *ngIf="foo==false && bar==false">
-  			<div class="row text-center introBox">
-  				<h1 class="introTitle">M-Karaoke.IO</h1>
-		  		<div *ngIf="bar==false">
+  		<div class="" *ngIf="foo==false && bar==false" #introContainer>
+	  		<div class="text">
+			  <svg>
+			   
+			    <!-- Apply color here! -->
+			    <!-- Color aquí -->
+			    <rect id="base" x="0" y="0" width="100%" height="100%"/>
+			    <text id="title" x="50%" y="0" dy="1.58em">M-KARAOKE.IO</text>
+			  </svg>
+			  <div class="text-button" *ngIf="bar==false">
 	  				<button class="btn btn-primary" (click)="createNewGame()">Create Karaoke Room</button>
 	  				<button class="btn btn-primary" (click)="joinGame()" >Join a Room</button>
-	  			</div>
-  			</div>
-
+	  		  </div>
+			</div>
   		</div>
   		<div *ngIf="foo">
   			<host></host>
@@ -51,7 +56,8 @@ export class AppComponent implements AfterViewInit {
  @ViewChild(hostComponent) hostComp: hostComponent;
  @ViewChild(JoinComponent) joinComp: JoinComponent;
  @ViewChild('host') hostEl:ElementRef;
-@ViewChild('webGl') webGl:ElementRef;
+ @ViewChild('webGl') webGl:ElementRef;
+ @ViewChild('introContainer') introContainer:ElementRef;
  @ViewChild('join', { read: ViewContainerRef })
  
 
@@ -81,6 +87,8 @@ private target: ViewContainerRef;
  tilesW:number =15;
  tilesH:number =10;
  mouse:Array<any> = [.5, .5];
+ exitTime:number =0
+ enterTextTime:number =0
 
 
  meshes:Array<any>
@@ -126,7 +134,7 @@ private target: ViewContainerRef;
      	_.delay(function(){
      		self.foo = true;
      	self.client.emit('hostCreateNewGame');	
-     	},4000)
+     	},self.exitTime)
 	 }
 
 	 joinGame(){
@@ -162,19 +170,19 @@ private target: ViewContainerRef;
 	    this.camera.position.z = 1500;
 	    this.camera.position.x = 1400;
 	    this.camera.position.y = 800;
-	    this.geometry = new THREE.BoxGeometry( 200, 200, 20 );
+	    this.geometry = new THREE.BoxGeometry( 200, 200, 10 );
 	    // this.material  = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
 	    
 	    var self = this
 	    
 	     this.imagesArr = this.shuffle(this.imagesArr)
 	    let i:number=0;
-	     _.times(self.tilesW, function(x){
+	     _.times(self.tilesW, function(x:any){
 	     	i=i+1;
-			return _.times(self.tilesH,function(y){
+			return _.times(self.tilesH,function(y:any){
 				i=i+1;
 				self.material =new THREE.MeshBasicMaterial({
-			    	map:new THREE.ImageUtils.loadTexture('/app/images/'+self.imagesArr[i]),
+			    	map:THREE.ImageUtils.loadTexture('/app/images/'+self.imagesArr[i]),
 			    	side:THREE.DoubleSide,
 			    	transparent:true
 			    })
@@ -192,7 +200,8 @@ private target: ViewContainerRef;
 	   	
 
 	   	this.animateParticle();
-	   	this.animate()
+	   	this.animate();
+
 	   	THREEx.WindowResize(this.renderer, this.camera);
 	    //document.body.appendChild( this.renderer.domElement );
 
@@ -210,14 +219,14 @@ private target: ViewContainerRef;
 		var self= this
 		let mZ:number =0
 		this.shuffle(this.meshes)
-		_.each(this.meshes,function(m,i){
+		_.each(this.meshes,function(m:any,i:any){
 			//m.position.z =1000
 			TweenMax.fromTo(m.position , 4,
 			{
 				z:m.position.z-3000,
 			},
 			{
-			 z:m.position.z+600
+			 z:m.position.z+600,
 		     // repeat: 1, /* Aka infinite amount of repeats */
 	    	 //yoyo: true, /* Make it go back and forth */
 	    	 delay:(i+1)*.02
@@ -230,7 +239,7 @@ private target: ViewContainerRef;
 			},
 			{
 			 	x:0,
-			 	y:0
+			 	y:0,
 		     // repeat: 1, /* Aka infinite amount of repeats */
 	    	 //yoyo: true, /* Make it go back and forth */
 	    	 delay:(i+1)*.02
@@ -241,7 +250,7 @@ private target: ViewContainerRef;
 				opacity:0
 			},
 			{
-			 	opacity:.6
+			 	opacity:.6,
 		     // repeat: 1, /* Aka infinite amount of repeats */
 	    	 //yoyo: true, /* Make it go back and forth */
 	    	 delay:(i+1)*.04
@@ -255,8 +264,10 @@ private target: ViewContainerRef;
 
 
 
-	shuffle(array) {
-	  var currentIndex = array.length, temporaryValue, randomIndex;
+	shuffle(array:Array<any>) {
+	  let currentIndex:number = array.length,
+	   temporaryValue:any, 
+	   randomIndex:any;
 
 	  // While there remain elements to shuffle...
 	  while (0 !== currentIndex) {
@@ -266,18 +277,26 @@ private target: ViewContainerRef;
 	    currentIndex -= 1;
 
 	    // And swap it with the current element.
-	    temporaryValue = array[currentIndex];
+	     temporaryValue = array[currentIndex];
 	    array[currentIndex] = array[randomIndex];
 	    array[randomIndex] = temporaryValue;
 	  }
 
 	  return array;
 	}
-	getRandomInt(min, max) {
+	getRandomInt(min:number, max:number) {
 	    return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 	ngAfterViewInit(){
 		$(this.webGl.nativeElement).append( this.renderer.domElement );
+
+	   	TweenMax.fromTo($(this.introContainer.nativeElement),this.enterTextTime,{
+	   			opacity:0
+	   		},{
+	   			opacity:1,
+	   			delay:this.enterTextTime
+	   		})
+
 	}
 	animate() {
 	    this.animID = requestAnimationFrame( this.animate.bind(this));

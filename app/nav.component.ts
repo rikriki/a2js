@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component,Input,Output,EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'navigation',
   template: `
+  {{name}}
   <nav class="navbar navbar-default">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -17,18 +18,26 @@ import { Component } from '@angular/core';
       </div>
       <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+          <input type="text" [(ngModel)]="song" class="form-control" placeholder="Search" [ngModelOptions]="{standalone: true}">
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default" (click)="onSearchClick()">Submit</button>
       </form>
     </div><!-- /.container-fluid -->
   </nav>
-  `
+  `,
+   // Outputs:['searchSong']
 })
 export class NavComponent { 
+  @Output() searchSong = new EventEmitter();
+  @Input()  name: string;
+  private song:String;
   constructor(){
+     this.searchSong.emit('Riki')
     
-    
+  }
+  onSearchClick(){
+    this.searchSong.emit(this.song)
+
   }
   
 }

@@ -7,6 +7,7 @@ import { AppComponent }  from './app.component';
 import { hostComponent }  from './host.component';
 import { JoinComponent }  from './join.component';
 import {NavComponent} from './nav.component';
+// import {ArtistPipe} from './artist.pipe';
 
 
 // import { UserComponent }  from './user.component';
