@@ -20,7 +20,7 @@ declare var THREEx:any
   template: `
 		<div class="webGl" #webGl *ngIf="foo==false && bar==false"></div>
   		<div class="" *ngIf="foo==false && bar==false" #introContainer>
-	  		<div class="text">
+	  		<div class="text text-center">
 			  <svg>
 			   
 			    <!-- Apply color here! -->
