@@ -44,10 +44,7 @@ io.sockets.on('connection',(socket)=>{
 })
 
 var songs = require('./songsSmall');
-<<<<<<< Updated upstream
-var testing = true;
 
-=======
 var testing = false;
 
 // create application/json parser
@@ -59,8 +56,6 @@ var jsonParser = bodyParser.json()
 app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 app.use(jsonParser);
->>>>>>> Stashed changes
-
 
 function initGame(socket){
   sockets = socket;
