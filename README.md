@@ -1,1 +1,1 @@
-Karaoke
+Karaoke App
