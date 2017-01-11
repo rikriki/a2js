@@ -28,7 +28,7 @@ declare var THREEx:any
 			    <rect id="base" x="0" y="0" width="100%" height="100%"/>
 			    <text id="title" x="50%" y="0" dy="1.58em">M-KARAOKE.IO</text>
 			  </svg>
-			  <div class="text-button" *ngIf="bar==false">
+			  <div class="text-button text-center" *ngIf="bar==false">
 	  				<button class="btn btn-primary" (click)="createNewGame()">Create Karaoke Room</button>
 	  				<button class="btn btn-primary" (click)="joinGame()" >Join a Room</button>
 	  		  </div>

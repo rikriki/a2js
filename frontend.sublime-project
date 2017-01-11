@@ -20,17 +20,14 @@
 			"path": "/Users/Frederick/Desktop/youtube/example"
 		},
 		{
-			"path": "/Users/Frederick/Desktop/youtube/frontend/",
 			"folder_exclude_patterns":
 			[
 				"**/*.js"
-			]
-			
+			],
+			"path": "."
 		},
 		{
-			"path": "."
+			"path": "/Users/Frederick/Desktop/youtube/samplePipe"
 		}
 	]
 }
-
-

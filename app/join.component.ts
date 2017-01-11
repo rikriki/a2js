@@ -8,17 +8,17 @@ declare var _:any
   template: `
   <navigation [name]="voter" (searchSong)="searchSonged($event)"></navigation>
   
-  <div class="container" >
-    <div class="row">
+
+  <div class="container" >    
         <div *ngIf="connected">
           <div class="info form-group">
             <h1>Welcome {{player}}</h1>
-            <button  class="btn btn-primary" (click)="videoControl('stop')">Stop</button>
-            <button  class="btn btn-primary" (click)="videoControl('play')">Play</button>
-            <button  class="btn btn-primary" (click)="videoControl('pause')">Pause</button>
+            <button  class="btn btn-primary" (click)="videoControl('stop')"><span class="glyphicon glyphicon-stop"></span></button>
+            <button  class="btn btn-primary" (click)="videoControl('play')"><span class="glyphicon glyphicon-play"></span></button>
+            <button  class="btn btn-primary" (click)="videoControl('pause')"><span class="glyphicon glyphicon-pause"></span></button>
             <button  class="btn btn-primary" (click)="switchScreen()" *ngIf="playlist==false">Reserved songs</button>
             <button  class="btn btn-primary" (click)="switchScreen()" *ngIf="playlist">Back to list</button>
-            <div class="info form-inline pull-right">
+            <div class="info form-inline pull-right hidden-xs">
               <label class="control-label">Genre</label>
                   <select class="form-control" 
                     [(ngModel)]="genreSelected"
@@ -36,12 +36,12 @@ declare var _:any
           </div>
           
           <ul class="list-group songLists" *ngIf="playlist==false" >
-              <li class="list-group-item" *ngFor="let song of (filteredSongs)" >
-                 <label for="checkbox">
+
+              <li class="list-group-item row" *ngFor="let song of (filteredSongs)" >
+                 <label for="checkbox" class="col-xs-10 col-lg-11">
                          {{song.title}} | {{song.genre}}
                  </label>
-                  <div class="pull-right action-buttons">
-                      
+                  <div class="col-xs-2 col-lg-1 text-right action-buttons">
                       <button class="btn btn-primary"  (click)="selectSong(song.videoId,song.title)"><span class="glyphicon glyphicon-plus"></span></button>
                   </div>
               </li>
@@ -66,7 +66,6 @@ declare var _:any
           </div>
           <button (click)="joinRoom()" class="btn btn-primary">Join</button>
         </div>
-    </div>
   </div>
   `,
   providers:[PostsService]
@@ -141,7 +140,8 @@ export class JoinComponent  {
                 }
     this.socket.emit('singerRemoveSong',data)                
   }
-  singerRemoveItemPlaylist(data){
+
+  singerRemoveItemPlaylist(data:any){
     let index:number = _.findIndex(this.savePlaylist,_.pick(data,['title','videoId','singer']))
     this.savePlaylist.splice(index,1)
   }

@@ -17,10 +17,11 @@ import { Component,Input,Output,EventEmitter } from '@angular/core';
         <a class="navbar-brand" href="#">M-Karaoke</a>
       </div>
       <form class="navbar-form navbar-right" role="search">
-        <div class="form-group">
-          <input type="text" [(ngModel)]="song" class="form-control" placeholder="Search" [ngModelOptions]="{standalone: true}">
+        <div class="form-group col-xs-10 searchForm">
+          <input type="text" [(ngModel)]="song" (ngModelChange)="valuechange($event)"  class="form-control" placeholder="Search" [ngModelOptions]="{standalone: true}">
         </div>
-        <button type="submit" class="btn btn-default" (click)="onSearchClick()">Submit</button>
+        <button type="submit" class="btn btn-default col-xs-2" (click)="onSearchClick()"><span class="glyphicon glyphicon-search"></span></button>
+
       </form>
     </div><!-- /.container-fluid -->
   </nav>
@@ -39,6 +40,12 @@ export class NavComponent {
     this.searchSong.emit(this.song)
 
   }
+
+  valuechange(newValue:any) {
+    this.searchSong.emit(newValue)
+    console.log(newValue)
+  }
+
   
 }
 

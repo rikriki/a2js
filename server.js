@@ -6,6 +6,7 @@ var device  = require('express-device');
 var users =0;
 var async = require('async')
 var _ = require('lodash')
+var request = require('request')
 // var bodyParser = require('body-parser')({
 //   limit : '100mb'
 // });
@@ -43,8 +44,22 @@ io.sockets.on('connection',(socket)=>{
 })
 
 var songs = require('./songsSmall');
+<<<<<<< Updated upstream
 var testing = true;
 
+=======
+var testing = false;
+
+// create application/json parser
+var bodyParser = require('body-parser')
+var jsonParser = bodyParser.json()
+
+// var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+app.use(jsonParser);
+>>>>>>> Stashed changes
 
 
 function initGame(socket){
@@ -175,17 +190,36 @@ app.get('/', function(req, res) {
   res.render('index.html');
   
 });
+
+app.post('/hooks', function(req, res) {
+  console.log(req.body,"eh!")
+  console.log(req.headers['user-agent'], "headers")
+  res.send({test:"s"})
+  exec('git pull origin master', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.log(`stderr: ${stderr}`);
+    });
+  // request.post
+  // /repos/:owner/:repo/hooks/:id/tests
+  // "https://api.github.com/repos/octocat/Hello-World/hooks/1",
+})
+
 var cachedSongs;
 app.get('/songs', function(req, res) {
   console.log(testing, " songs")
   if(testing){
       res.send({type:'songs',items:songs.items})
   }else{
-    var sql = "SELECT title,videoId FROM `karaoke_videos`"
+
+    var sql = "SELECT title,videoId FROM `karaoke_videos` LIMIT 100 "
     getResults(sql, function(err, results) {
         if(err)
           res.send({result:err})
-        cachedSongs = {type:'songs',items:results}
+
         res.send({type:'songs',items:results})
     })
   }
@@ -199,44 +233,9 @@ app.get('/genres', function(req, res) {
         res.send({type:'genres',items:results})
     })
 });
-app.get('/portfolios', function(req, res) {
-    
-    var sql = "SELECT `entity_tech`.`technologies`,`entity_foobar`.`id`,`entity_foobar`.`images`,`entity_foobar`.`name` ,`entity_foobar`.`link`,`entity_foobar`.`image`,`entity_foobar`.`sub_headline`,`entity_foobar`.`descriptions` from (SELECT `entity_item_technologies`.`itemID`, GROUP_CONCAT(`entity_technologies`.`name` SEPARATOR ',' ) as 'technologies' from  `entity_item_technologies` LEFT JOIN `entity_technologies` ON `entity_technologies`.`id` =  `entity_item_technologies`.`technologyID` GROUP BY `entity_item_technologies`.`itemID`) as `entity_tech` RIGHT JOIN (SELECT `entity_foo`.`id`, GROUP_CONCAT(`entity_images`.`images` SEPARATOR ',') as 'images',`entity_foo`.`name`,`entity_foo`.`image`,`entity_foo`.`link`,`entity_foo`.`sub_headline`,`entity_foo`.`descriptions` from (SELECT  `id`,`image`,  `name`, `link`, `sub_headline`, `descriptions` from `entity_items`) as `entity_foo` LEFT JOIN `entity_images` ON `entity_images`.`itemID` = `entity_foo`.`id` GROUP BY `entity_images`.`itemID`) as `entity_foobar` ON `entity_tech`.`itemID` = `entity_foobar`.`id`"
-    getResults(sql, function(err, results) {
-        if(err)
-          res.send({items:results})
-  
-        res.send({items:results})
-    })
-});
-// create application/json parser
-var bodyParser = require('body-parser')
-var jsonParser = bodyParser.json()
-
-// var urlencodedParser = bodyParser.urlencoded({ extended: false })
-
-app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-app.use(jsonParser);
 
 
-app.post('/items',jsonParser, function(req,res){
-  console.log('Server', req.body)
-  var item =req.body
-  
-  var sql  = "INSERT INTO ?? SET ?";
-  var arr = ["entity_items",{name:item.name,link:item.link,sub_headline:item.subHeadline,descriptions:item.descriptions}]
-  sql = mysql.format(sql,arr);
-  getResults(sql,function(err,results){
-    if(err){
-      console.log(err)
-      res.send(err)
-    }
-    console.log(results,'get results')
-    res.send({items:results})
-  })
-  
-})
+
 
 function getResults(sql,done){
   connection.query(sql,function(err,results){

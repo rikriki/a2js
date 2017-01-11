@@ -2,15 +2,17 @@ import { Component,AfterViewInit } from '@angular/core';
 import { PostsService } from './posts.service';
 declare var $:any
 declare var YT:any
+declare var _:any
 @Component({
   selector: 'host',
   template: `<div class="container-fuild">
-	  			<div class="row text-center">
+
+	  			<div class="text-center">
 	  				<h1> Welcome to M-Karaoke.IO</h1>
 	  				<p>Visit this link http://localhost:3002 and join with this id:{{roomId}}</p>
 			  		<div class="singers btn-primary"><span class="glyphicon glyphicon-user icon btn-lg" aria-hidden="true"><b class="text-primary btn-default">{{user}}</b></span></div>
  		     	</div>
- 		     	<div class="row">
+ 		     	<div>
  		     		<div class="col-md-8" id="player"></div>
  		     		<div class="col-md-4" id="playlist" #playList> 
  		     			<h1>Songs</h1>
@@ -93,7 +95,8 @@ export class hostComponent implements AfterViewInit {
 		this.player.loadVideoById(data.videoId, 15, "large")
 		this.removefromReserve(data)	
 	}
-	removefromReserve(data){
+
+	removefromReserve(data:any){
 		this.socket.emit('hostRemoveReserve',data)
 	}
 	ngAfterViewInit() {
