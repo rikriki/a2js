@@ -115,7 +115,7 @@ export class JoinComponent  {
 
     
     this.connected=false
-    this.initTest()
+    // this.initTest()
     // this.postsService;
   }
   selectSong(videoId:String,title:String){
