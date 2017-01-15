@@ -198,7 +198,7 @@ app.post('/hooks', function(req, res) {
   console.log(req.body,"eh!")
   console.log(req.headers['user-agent'], "headers")
   res.send({test:"s"})
-  exec('git pull origin master', (error, stdout, stderr) => {
+  exec('git pull origin master && npm start', (error, stdout, stderr) => {
       if (error) {
         console.error(`exec error: ${error}`);
         return;
@@ -206,9 +206,7 @@ app.post('/hooks', function(req, res) {
       console.log(`stdout: ${stdout}`);
       console.log(`stderr: ${stderr}`);
     });
-  // request.post
-  // /repos/:owner/:repo/hooks/:id/tests
-  // "https://api.github.com/repos/octocat/Hello-World/hooks/1",
+  
 })
 
 var cachedSongs;

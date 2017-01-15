@@ -148,7 +148,7 @@ export class JoinComponent  {
      if(_.isEmpty(this.languageSelected)){
        return;
      }
-     let Songs:Array<any> = _.filter(this.songs,function(v){
+     let Songs:Array<any> = _.filter(this.songs,function(v:any){
        return _.includes(self.languageSelected,v.language)
      })
      if(Songs.length>100){
