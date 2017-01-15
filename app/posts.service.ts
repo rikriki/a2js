@@ -28,6 +28,12 @@ export class PostsService{
 			     .toPromise()
 	             .then(this.extractData)
 	             .catch(this.handleError);
+			},
+			getCategory:()=>{
+				return this.http.get(this.url+'/language')
+				 .toPromise()
+	             .then(this.extractData)
+	             .catch(this.handleError);
 			}
 		}	
 	}

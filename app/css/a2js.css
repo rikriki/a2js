@@ -115,6 +115,9 @@ span > b{
 
 
 /*Singer playlist*/
+.language span{
+  margin-right:10px;
+}
 .songLists{
     height: 60vh;
     overflow: scroll;

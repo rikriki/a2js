@@ -105,7 +105,15 @@ function singerJoinRoom(data){
 }
 
 function singerSendSong(data){
+  
+  let sql = "INSERT INTO ?? SET ?";
+  let arr= ["karaoke_song_history",{singer:data.singer,videoId:data.videoId}]
+  sql = mysql.format(sql,arr);
+  getResults(sql,function(results){
+    console.log(results)
+  })
   io.sockets.in(data.karaokeId).emit('hostReserveSong', data);
+  
 }
 function hostCreateNewGame(){
    // Create a unique Socket.IO Room
@@ -205,12 +213,13 @@ app.post('/hooks', function(req, res) {
 
 var cachedSongs;
 app.get('/songs', function(req, res) {
-  console.log(testing, " songs")
+  
+  console.log(req.query, " songsa")
   if(testing){
       res.send({type:'songs',items:songs.items})
   }else{
 
-    var sql = "SELECT title,videoId FROM `karaoke_videos` LIMIT 100 "
+    var sql = "SELECT title,videoId,language FROM `karaoke_videos`"
     getResults(sql, function(err, results) {
         if(err)
           res.send({result:err})
@@ -218,6 +227,15 @@ app.get('/songs', function(req, res) {
         res.send({type:'songs',items:results})
     })
   }
+});
+app.get('/language', function(req, res) {
+  var sql = "SELECT language FROM `karaoke_videos` GROUP BY `language` DESC"
+  getResults(sql, function(err, results) {
+        if(err)
+          res.send({result:err})
+
+        res.send({type:'language',items:results})
+  })
 });
 app.get('/genres', function(req, res) {
     var sql = "SELECT type FROM `karaoke_genres` group by `type`"

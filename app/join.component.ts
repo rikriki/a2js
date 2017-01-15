@@ -27,7 +27,10 @@ declare var _:any
                   </select>
             </div>
           </div>
-          
+          <div class="language">
+            <span *ngFor="let item of language"class="label label-success" (click)="tagClick(item.language)">{{item.language}}</span>
+          </div>
+          <h4>{{songResults}} of {{numberOfSongs}} Songs</h4>
             
           <div class="list-group songLists" *ngIf="playlist">
             <button type="button" class="list-group-item" *ngFor="let song of (savePlaylist)" (click)="removeSong(song.videoId,song.title)">
@@ -83,14 +86,18 @@ export class JoinComponent  {
   karaokeId:String
   
   private genreSelected:String;
+  private languageSelected:Array<String>=[];
   private filteredSongs:Array<any>;
   private songs:Array<any> = [];
   private genres:Array<any> = [];
 
   private items:any;
   private errorMessage:String;
+  private songResults:number;
+  private numberOfSongs:number;
   private playlist:Boolean = false;
   private savePlaylist:Array<any>=[];
+  private language:Array<any>=[];
 
   
   constructor(private postsService:PostsService){
@@ -108,7 +115,7 @@ export class JoinComponent  {
 
     
     this.connected=false
-    // this.initTest()
+    this.initTest()
     // this.postsService;
   }
   selectSong(videoId:String,title:String){
@@ -125,9 +132,30 @@ export class JoinComponent  {
   }
   searchSonged(searchStr:any){
     
-    this.filteredSongs = _.filter(this.songs,function(v:any){
-      return (v.title.match(new RegExp(searchStr,'i')))
+    let Songs:Array<any>= _.filter(this.songs,function(v:any){
+      return (v.title.match(new RegExp('^'+searchStr,'i')))
     })
+    if(Songs.length>100){
+      this.filteredSongs =_.take(Songs,100)
+    }else{
+      this.filteredSongs = Songs
+    }
+    this.songResults = this.filteredSongs.length
+  }
+  tagClick(tag:String){
+    var self =this
+     this.languageSelected = (_.includes(this.languageSelected,tag)) ? _.pull(this.languageSelected,tag) : this.languageSelected.concat(tag) 
+     if(_.isEmpty(this.languageSelected)){
+       return;
+     }
+     let Songs:Array<any> = _.filter(this.songs,function(v){
+       return _.includes(self.languageSelected,v.language)
+     })
+     if(Songs.length>100){
+       this.filteredSongs =_.take(Songs,100)
+     }else{
+       this.filteredSongs = Songs
+     }
   }
   removeSong(videoId:String,title:String){
     this.savePlaylist.splice(_.findIndex(this.savePlaylist,{videoId:videoId}),1)
@@ -184,21 +212,27 @@ export class JoinComponent  {
       Promise.all(promises).then(function(results){
         _.each(results,function(r:any){
           self.items = JSON.parse(r._body)
-          
           switch(self.items.type){
             case 'songs' :
-              self.songs = self.items.items
-              self.filteredSongs=self.songs=_.map(self.songs,function(u:any,i:number){
+               
+              self.songs=_.map(self.items.items,function(u:any,i:number){
                 return {
                   title:u.title,
                   genre:(i%2)?'Pop':'Rock',
-                  videoId:u.videoId
+                  videoId:u.videoId,
+                  language:u.language
                 }
               })
+              self.filteredSongs =_.take(self.songs,100)
+              self.songResults = self.filteredSongs.length
+              self.numberOfSongs = self.songs.length
             break;
             case 'genres':
               self.genres = self.items.items
               self.genreSelected = self.genres[0];
+            break;
+            case 'language':
+              self.language= self.items.items
             break;
           }
         })
@@ -227,21 +261,27 @@ export class JoinComponent  {
       Promise.all(promises).then(function(results){
         _.each(results,function(r:any){
           self.items = JSON.parse(r._body)
-          
           switch(self.items.type){
             case 'songs' :
-              self.songs = self.items.items
-              self.filteredSongs=self.songs=_.map(self.songs,function(u:any,i:number){
+               
+              self.songs=_.map(self.items.items,function(u:any,i:number){
                 return {
                   title:u.title,
                   genre:(i%2)?'Pop':'Rock',
-                  videoId:u.videoId
+                  videoId:u.videoId,
+                  language:u.language
                 }
               })
+              self.filteredSongs =_.take(self.songs,100)
+              self.songResults = self.filteredSongs.length
+              self.numberOfSongs = self.songs.length
             break;
             case 'genres':
               self.genres = self.items.items
               self.genreSelected = self.genres[0];
+            break;
+            case 'language':
+              self.language= self.items.items
             break;
           }
         })
