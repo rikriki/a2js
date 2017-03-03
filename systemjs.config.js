@@ -11,7 +11,7 @@
     // map tells the System loader where to look for things
     map: {
       // our app is within the app folder
-      app: 'app',
+      app: 'dist/js',
 
       // angular bundles
       '@angular/core': 'npm:@angular/core/bundles/core.umd.js',
@@ -24,9 +24,9 @@
       '@angular/forms': 'npm:@angular/forms/bundles/forms.umd.js',
 
       // other libraries
-      'rxjs':                      'npm:rxjs',
-      'socket.io-client':'npm:socket.io-client/dist/socket.io.js',
-      'three':'npm:/three/build/three.js',
+      'rxjs':                      'dist/lib/js/rxjs',
+      //'socket.io-client':'npm:socket.io-client/dist/socket.io.js',
+      // 'three':'npm:/three/build/three.js',
       'TweenMax':'npm:/gsap/src/uncompressed/TweenMax.js',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
       '@ng-bootstrap/ng-bootstrap': 'node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.js',
@@ -42,7 +42,6 @@
       },
        "socket.io-client": {"defaultExtension": "js"},
        "TweenMax": {"defaultExtension": "js"},
-       
     }
   });
 })(this);

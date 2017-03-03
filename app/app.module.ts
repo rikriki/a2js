@@ -1,3 +1,5 @@
+import './rxjs-extensions';
+
 import { NgModule }      from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,6 +9,7 @@ import { AppComponent }  from './app.component';
 import { hostComponent }  from './host.component';
 import { JoinComponent }  from './join.component';
 import {NavComponent} from './nav.component';
+import {InputTextComponent} from './input.text.component';
 // import {ArtistPipe} from './artist.pipe';
 
 
@@ -19,7 +22,7 @@ import {NavComponent} from './nav.component';
 
 @NgModule({
   imports:      [ BrowserModule,FormsModule,HttpModule],
-  declarations: [ AppComponent,hostComponent,JoinComponent,NavComponent],
+  declarations: [ AppComponent,hostComponent,JoinComponent,NavComponent,InputTextComponent],
   entryComponents: [hostComponent],
   bootstrap:    [ AppComponent ]
 })

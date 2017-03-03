@@ -19,3 +19,5 @@ bbone
  app/.baseDir.ts
  a2js.sublime-project
 
+*.sublime-project
+*.sublime-workspace

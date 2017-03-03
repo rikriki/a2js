@@ -1,6 +1,7 @@
 import { Component,EventEmitter } from '@angular/core';
 import {PostsService} from './posts.service';
-import {NavComponent} from './nav.component'
+import {NavComponent} from './nav.component';
+import {InputTextComponent} from './input.text.component';
 declare var $:any
 declare var _:any
 @Component({
@@ -54,15 +55,8 @@ declare var _:any
         
         <div *ngIf="connected==false">
           <h1>Join a room</h1>
-    			<div class="info form-group">
-            <label class="control-label" for="inputPlayerName">Your Name:</label>
-            <input id="inputPlayerName"  class="form-control" type="text" [(ngModel)]="item.name" />
-          </div>
 
-          <div class="info form-group">
-            <label for="inputGameId" class="control-label">Game ID:</label>
-            <input  class="form-control" id="inputGameId" [(ngModel)]="item.id" type="text"/>
-          </div>
+    			<inputText [inputs]="Inputs" (updateForm)="updatedForm($event)"></inputText>
           <div class="alert alert-danger" *ngIf="errorMessage">
             <a href="#" class="close" data-dismiss="alert">&times;</a>
             <strong>{{errorMessage}}</strong> 
@@ -74,12 +68,14 @@ declare var _:any
   providers:[PostsService]
 })
 
-export class JoinComponent  {
+export class JoinComponent {
 	private item:any = {
 		type:'',
 		id:''
 	}
-  private connected:Boolean
+  
+  Inputs: Array<any> = [{name:'Name'},{name:'Room ID'}];
+  private connected:Boolean =false
   private player:String
   socket:any;
   mySocketId:String
@@ -103,7 +99,14 @@ export class JoinComponent  {
   constructor(private postsService:PostsService){
     
   }
-
+  updatedForm(data:any){
+    
+    if(data.input=='Name'){
+      this.item.type=data.value
+    }else{
+      this.item.id=data.value
+    }
+  } 
 	initClient(socket:any){
     
     this.socket = socket
@@ -114,10 +117,11 @@ export class JoinComponent  {
     this.socket.on('OnError',this.onError.bind(this))
 
     
-    this.connected=false
+    // this.connected=false
     // this.initTest()
     // this.postsService;
   }
+
   selectSong(videoId:String,title:String){
     console.log(videoId," Selected song id")
     var data = {
@@ -174,7 +178,7 @@ export class JoinComponent  {
     this.savePlaylist.splice(index,1)
   }
 	joinRoom(){
-		
+		debugger
 		console.log("singer detail ", this.item)
     this.socket.emit('singerJoinRoom',this.item)
 	}

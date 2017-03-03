@@ -4,7 +4,7 @@ import { Component,Input,Output,EventEmitter } from '@angular/core';
   selector: 'navigation',
   template: `
   {{name}}
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-karaoke">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
@@ -20,7 +20,7 @@ import { Component,Input,Output,EventEmitter } from '@angular/core';
         <div class="form-group col-xs-10 searchForm">
           <input type="text" [(ngModel)]="song" (ngModelChange)="valuechange($event)"  class="form-control" placeholder="Search" [ngModelOptions]="{standalone: true}">
         </div>
-        <button type="submit" class="btn btn-default col-xs-2" (click)="onSearchClick()"><span class="glyphicon glyphicon-search"></span></button>
+        <button type="submit" class="btn btn-primary col-xs-2" (click)="onSearchClick()"><span class="glyphicon glyphicon-search"></span></button>
 
       </form>
     </div><!-- /.container-fluid -->

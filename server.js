@@ -40,7 +40,7 @@ var io = require('socket.io').listen(server)
 io.sockets.on('connection',(socket)=>{
   
   console.log('Socket Coonected!', socket.id)
-  initGame(socket)
+  initApp(socket)
 })
 
 var songs = require('./songsSmall');
@@ -57,7 +57,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 app.use(jsonParser);
 
-function initGame(socket){
+function initApp(socket){
   sockets = socket;
   socket.on('hostCreateNewGame',hostCreateNewGame)
   socket.on('singerJoinRoom',singerJoinRoom)
@@ -65,11 +65,6 @@ function initGame(socket){
   socket.on('singerRemoveSong',singerRemoveSong)
   socket.on('singerSendCommand',singerSendCommand)
   socket.on('hostRemoveReserve',hostRemoveReserve)
-  
-  
-  
-  
-
 }
 function hostRemoveReserve(data){
   io.sockets.in(data.singerId).emit('singerRemoveItemPlaylist', data);
@@ -83,7 +78,7 @@ function singerSendCommand(data){
 function singerJoinRoom(data){
    // A reference to the player's Socket.IO socket object
     var sock = this;
-
+    console.log(data)
     var room =io.sockets.adapter.rooms[data.id]
     // If the room exists...
     if( room != undefined ){

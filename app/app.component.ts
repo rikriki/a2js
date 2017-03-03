@@ -5,15 +5,14 @@ import { PostsService } from './posts.service'
 import { hostComponent } from './host.component'
 import { JoinComponent } from './join.component'
 import {TitlePipe} from './TitlePipe'
-import * as io from 'socket.io-client'
-import * as THREE from 'three'
-
-
+// import * as io from 'socket.io-client'
+// import * as THREE from 'three'
+declare var io:any
+declare var THREE:any
 declare var _:any
 declare var $:any
 declare var TweenMax:any
 declare var THREEx:any
-
 
 @Component({
   selector: 'my-app',
@@ -49,9 +48,6 @@ declare var THREEx:any
   // pipes: [TitlePipe]
 })
 
-//https://scotch.io/tutorials/how-to-deal-with-different-form-controls-in-angular-2
-
-
 export class AppComponent implements AfterViewInit {
  @ViewChild(hostComponent) hostComp: hostComponent;
  @ViewChild(JoinComponent) joinComp: JoinComponent;
@@ -61,7 +57,7 @@ export class AppComponent implements AfterViewInit {
  @ViewChild('join', { read: ViewContainerRef })
  
 
-  private join: any;
+private join: any;
 private target: ViewContainerRef;
  name:String = 'Player';
  titleValue:String 
@@ -88,7 +84,7 @@ private target: ViewContainerRef;
  tilesH:number =10;
  mouse:Array<any> = [.5, .5];
  exitTime:number =0
- enterTextTime:number =0
+ enterTextTime:number =2
 
 
  meshes:Array<any>
@@ -138,6 +134,7 @@ private target: ViewContainerRef;
 	 }
 
 	 joinGame(){
+	 	
 	 	this.bar = true;
 	 	// 
 	 	// const factory = this.componentFactoryResolver.resolveComponentFactory(JoinComponent);
@@ -177,12 +174,16 @@ private target: ViewContainerRef;
 	    
 	     this.imagesArr = this.shuffle(this.imagesArr)
 	    let i:number=0;
+	     var loader = new THREE.TextureLoader();
 	     _.times(self.tilesW, function(x:any){
 	     	i=i+1;
+
+
 			return _.times(self.tilesH,function(y:any){
 				i=i+1;
 				self.material =new THREE.MeshBasicMaterial({
-			    	map:THREE.ImageUtils.loadTexture('/app/images/'+self.imagesArr[i]),
+			    	map:loader.load('/app/images/'+self.imagesArr[i]),
+			    	
 			    	side:THREE.DoubleSide,
 			    	transparent:true
 			    })
@@ -203,7 +204,7 @@ private target: ViewContainerRef;
 	   	this.animate();
 
 	   	THREEx.WindowResize(this.renderer, this.camera);
-	    //document.body.appendChild( this.renderer.domElement );
+	    document.body.appendChild( this.renderer.domElement );
 
 	}
 	onMouseMove(ev:any) {
